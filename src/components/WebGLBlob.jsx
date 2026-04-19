@@ -262,8 +262,9 @@ function BlobMesh({ isDark }) {
     }
     meshRef.current.scale.setScalar(scale);
 
-    // X drift — sinusoidal across sections
-    const xDrift = Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.17;
+    // X drift — sinusoidal across sections. Start slightly right.
+    const xBaseOffset = viewport.width * 0.15;
+    const xDrift = xBaseOffset + Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.17;
     meshRef.current.position.set(xDrift, yOffset, 0);
 
     // Rotation
