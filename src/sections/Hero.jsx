@@ -9,6 +9,7 @@ export default function Hero() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
   const [isTypingDone, setIsTypingDone] = useState(false);
+  const [isTaglineTypingDone, setIsTaglineTypingDone] = useState(false);
 
   return (
     <section id="hero" className="relative overflow-hidden pt-28 pb-0">
@@ -31,21 +32,12 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {profile.availableForWork && (
-              <div 
-                className="shimmer-badge mb-6 inline-flex items-center gap-3 rounded-full text-sm font-semibold"
-                style={{
-                  border: isDark ? "1px solid var(--color-border)" : "1px solid var(--color-accent-soft)",
-                  padding: "8px 16px",
-                  backgroundColor: "var(--color-badge-bg)",
-                  width: "max-content",
-                  whiteSpace: "nowrap"
-                }}
-              >
+              <div className="mb-6 inline-flex items-center gap-3">
                 <div className="relative flex h-2 w-2 flex-shrink-0 items-center justify-center">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ backgroundColor: isDark ? "#d4ff00" : "var(--color-accent)" }} />
-                  <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: isDark ? "#d4ff00" : "var(--color-accent)" }} />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "var(--color-accent)" }} />
+                  <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: "var(--color-accent)" }} />
                 </div>
-                <span style={{ color: isDark ? "var(--color-text-heading)" : "var(--color-accent)" }}>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--color-text-muted)" }}>
                   Open to new opportunities
                 </span>
               </div>
@@ -101,10 +93,49 @@ export default function Hero() {
             </h1>
 
             <p className="mb-10 max-w-lg text-lg leading-relaxed" style={{ color: "var(--color-text-body)" }}>
-              {profile.tagline}
+              {isTypingDone ? (
+                <motion.span
+                  initial="hidden"
+                  animate="visible"
+                  onAnimationComplete={() => setIsTaglineTypingDone(true)}
+                  variants={{
+                    hidden: { opacity: 1 },
+                    visible: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.015 }
+                    }
+                  }}
+                  className="inline-block relative"
+                >
+                  {profile.tagline.split("").map((char, i) => (
+                    <motion.span
+                      key={i}
+                      variants={{ hidden: { opacity: 0, display: "none" }, visible: { opacity: 1, display: "inline" } }}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                  {!isTaglineTypingDone && (
+                    <motion.span
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                      style={{ color: "var(--color-accent)", marginLeft: "2px", fontWeight: "300" }}
+                    >
+                      |
+                    </motion.span>
+                  )}
+                </motion.span>
+              ) : (
+                <span style={{ opacity: 0 }}>{profile.tagline}</span>
+              )}
             </p>
 
-            <div className="flex flex-wrap gap-4">
+            <motion.div 
+              className="flex flex-wrap gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isTaglineTypingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
               <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-primary">
                 View Projects
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -119,7 +150,7 @@ export default function Hero() {
                   </svg>
                 </div>
               </a>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Right — Avatar */}

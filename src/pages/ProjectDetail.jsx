@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import projects from "../data/projects";
 import { useTheme } from "../context/ThemeContext";
@@ -8,6 +9,11 @@ export default function ProjectDetail() {
   const { title } = useParams();
   const { mode } = useTheme();
   const isDark = mode === "dark";
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [title]);
+
   const project = projects.find((p) => p.title.toLowerCase().replace(/\s+/g, '-') === title);
 
   if (!project) {
