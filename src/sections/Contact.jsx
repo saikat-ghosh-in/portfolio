@@ -22,23 +22,22 @@ export default function Contact() {
 
   return (
     <SectionWrapper id="contact" className="py-12">
-      <div className="glass-section py-12 relative">
-        {isDark && <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />}
+      <div className="py-12 relative">
+        <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />
         <div className="mx-auto max-w-6xl px-6">
           {/* Header */}
-          <div className={`mb-14 ${isDark ? "text-left" : "text-center"}`}>
-            {!isDark && <p className="section-label">Reach Out</p>}
-            <h2 className="section-title" style={isDark ? { display: "flex", alignItems: "center", gap: "1rem" } : {}}>
-              {isDark && <span style={{ color: "var(--color-accent)" }}>/</span>}
+          <div className="mb-14 text-left">
+            <h2 className="section-title" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <span style={{ color: "var(--color-accent)" }}>/</span>
               Contact
             </h2>
-            {!isDark && <div className="section-divider mx-auto" />}
-            {isDark && <div className="section-divider mt-4" />}
+            <div className="section-divider mt-4" />
           </div>
 
           <div className="grid gap-12 lg:grid-cols-2">
             {/* Info */}
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true, margin: "-80px" }}>
+              <div className="glass-text p-7">
               <h3 className="mb-4 text-xl font-bold" style={{ color: "var(--color-text-heading)" }}>Get In Touch</h3>
               <p className="mb-8 text-base leading-relaxed max-w-md" style={{ color: "var(--color-text-body)" }}>{contact.text}</p>
 
@@ -64,6 +63,7 @@ export default function Contact() {
                   );
                 })}
               </div>
+              </div>
             </motion.div>
 
             {/* Form */}
@@ -76,12 +76,12 @@ export default function Contact() {
                       {field.type === "textarea" ? (
                         <textarea id={field.name} name={field.name} value={formData[field.name]} onChange={handleChange} placeholder={field.placeholder} required
                           className="w-full resize-none h-28 px-4 py-3 text-sm outline-none transition-all"
-                          style={{ backgroundColor: "var(--color-input-bg)", border: isDark ? "none" : "1px solid var(--color-input-border)", borderBottom: isDark ? "2px solid var(--color-border)" : undefined, borderRadius: "var(--radius-input)", color: "var(--color-input-text)" }}
+                          style={{ backgroundColor: "var(--color-glass-bg)", backdropFilter: "blur(12px)", border: isDark ? "none" : "1px solid var(--color-input-border)", borderBottom: isDark ? "2px solid var(--color-border)" : undefined, borderRadius: "var(--radius-input)", color: "var(--color-input-text)" }}
                         />
                       ) : (
                         <input type={field.type} id={field.name} name={field.name} value={formData[field.name]} onChange={handleChange} placeholder={field.placeholder} required
                           className="w-full px-4 py-3 text-sm outline-none transition-all"
-                          style={{ backgroundColor: "var(--color-input-bg)", border: isDark ? "none" : "1px solid var(--color-input-border)", borderBottom: isDark ? "2px solid var(--color-border)" : undefined, borderRadius: "var(--radius-input)", color: "var(--color-input-text)" }}
+                          style={{ backgroundColor: "var(--color-glass-bg)", backdropFilter: "blur(12px)", border: isDark ? "none" : "1px solid var(--color-input-border)", borderBottom: isDark ? "2px solid var(--color-border)" : undefined, borderRadius: "var(--radius-input)", color: "var(--color-input-text)" }}
                         />
                       )}
                     </div>

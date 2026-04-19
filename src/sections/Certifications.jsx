@@ -13,17 +13,15 @@ export default function Certifications() {
 
   return (
     <SectionWrapper id="certifications" className="py-12">
-      <div className="glass-section py-12 relative">
-        {isDark && <div className="absolute right-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />}
+      <div className="py-12 relative">
+        <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />
         <div className="mx-auto max-w-6xl px-6">
           {/* Header */}
-          <div className={`mb-14 ${isDark ? "text-right" : "text-center"}`}>
-            {!isDark && <p className="section-label">Credentials</p>}
-            <h2 className="section-title" style={isDark ? { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "1rem" } : {}}>
-              {isDark ? <>Certifications <span style={{ color: "var(--color-accent)" }}>/</span></> : "Certifications"}
+          <div className="mb-14 text-left">
+            <h2 className="section-title" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <span style={{ color: "var(--color-accent)" }}>/</span> Certifications
             </h2>
-            {!isDark && <div className="section-divider mx-auto" />}
-            {isDark && <div className="section-divider ml-auto mt-4" />}
+            <div className="section-divider mt-4" />
           </div>
 
           <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} className="mx-auto max-w-4xl">
@@ -63,7 +61,7 @@ export default function Certifications() {
                   return cert.url ? (
                     <motion.a variants={itemVariants} key={cert.id} href={cert.url} target="_blank" rel="noopener noreferrer"
                       className="block no-underline p-5 transition-all duration-300 hover:-translate-y-1 group/cert"
-                      style={{ backgroundColor: isDark ? "var(--color-bg-surface-alt)" : "var(--color-bg-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-card)" }}
+                      style={{ backgroundColor: "var(--color-glass-bg)", backdropFilter: "blur(12px)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-card)" }}
                     >
                       <div className="flex items-start justify-between">
                         <div>{content}</div>
@@ -73,7 +71,7 @@ export default function Certifications() {
                       </div>
                     </motion.a>
                   ) : (
-                    <motion.div variants={itemVariants} key={cert.id} className="p-5" style={{ border: "1px solid var(--color-border)", borderRadius: "var(--radius-card)" }}>
+                    <motion.div variants={itemVariants} key={cert.id} className="p-5" style={{ backgroundColor: "var(--color-glass-bg)", backdropFilter: "blur(12px)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-card)" }}>
                       {content}
                     </motion.div>
                   );

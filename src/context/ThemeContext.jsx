@@ -9,9 +9,9 @@ export function useTheme() {
 export function ThemeProvider({ children }) {
   const [mode, setMode] = useState(() => {
     try {
-      return localStorage.getItem("portfolio-theme") || "dark";
+      return localStorage.getItem("portfolio-theme") || "light";
     } catch {
-      return "dark";
+      return "light";
     }
   });
 
@@ -22,7 +22,7 @@ export function ThemeProvider({ children }) {
     document.documentElement.setAttribute("data-theme", mode);
     try {
       localStorage.setItem("portfolio-theme", mode);
-    } catch {}
+    } catch { }
   }, [mode]);
 
   const toggleMode = useCallback((e) => {

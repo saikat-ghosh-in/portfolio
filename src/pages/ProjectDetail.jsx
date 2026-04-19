@@ -173,7 +173,12 @@ export default function ProjectDetail() {
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{ duration: 0.6, delay: idx * 0.1 }}
                       className="p-8 md:p-12 rounded-3xl"
-                      style={{ backgroundColor: isDark ? "#0c0c14" : "#ffffff", border: `1px solid var(--color-border)` }}
+                      style={{ 
+                        backgroundColor: "var(--color-glass-bg)",
+                        backdropFilter: "blur(18px)",
+                        WebkitBackdropFilter: "blur(18px)",
+                        border: `1px solid var(--color-border)` 
+                      }}
                     >
                       <h3 className="text-2xl font-bold mb-4" style={{ color: "var(--color-text-heading)" }}>{h.heading}</h3>
                       <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-body)" }}>{h.detail}</p>
@@ -198,7 +203,13 @@ export default function ProjectDetail() {
                 {project.techFrontend && (
                   <motion.div
                     initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-                    className="p-10 md:p-16 rounded-3xl" style={{ backgroundColor: "var(--color-bg-surface)", border: `1px solid var(--color-border)` }}
+                    className="p-10 md:p-16 rounded-3xl" 
+                    style={{ 
+                      backgroundColor: "var(--color-glass-bg)",
+                      backdropFilter: "blur(18px)",
+                      WebkitBackdropFilter: "blur(18px)",
+                      border: `1px solid var(--color-border)` 
+                    }}
                   >
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Frontend</h3>
                     <div className="flex flex-wrap gap-3">
@@ -211,7 +222,13 @@ export default function ProjectDetail() {
                 {project.techBackend && (
                   <motion.div
                     initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-                    className="p-10 md:p-16 rounded-3xl" style={{ backgroundColor: "var(--color-bg-surface)", border: `1px solid var(--color-border)` }}
+                    className="p-10 md:p-16 rounded-3xl" 
+                    style={{ 
+                      backgroundColor: "var(--color-glass-bg)",
+                      backdropFilter: "blur(18px)",
+                      WebkitBackdropFilter: "blur(18px)",
+                      border: `1px solid var(--color-border)` 
+                    }}
                   >
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Backend & Infra</h3>
                     <div className="flex flex-wrap gap-3">
@@ -225,7 +242,13 @@ export default function ProjectDetail() {
             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-                className="max-w-4xl mx-auto p-10 md:p-16 rounded-3xl text-center" style={{ backgroundColor: "var(--color-bg-surface)", border: `1px solid var(--color-border)` }}
+                className="max-w-4xl mx-auto p-10 md:p-16 rounded-3xl text-center" 
+                style={{ 
+                  backgroundColor: "var(--color-glass-bg)",
+                  backdropFilter: "blur(18px)",
+                  WebkitBackdropFilter: "blur(18px)",
+                  border: `1px solid var(--color-border)` 
+                }}
               >
                 <div className="flex flex-wrap justify-center gap-3">
                   {project.tech.map(t => (

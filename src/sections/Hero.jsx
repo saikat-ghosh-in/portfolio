@@ -11,7 +11,7 @@ export default function Hero() {
   const [isTypingDone, setIsTypingDone] = useState(false);
 
   return (
-    <section id="hero" className="glass-section relative overflow-hidden pt-28 pb-0">
+    <section id="hero" className="relative overflow-hidden pt-28 pb-0">
       {/* Decorative background */}
       {isDark && (
         <div className="absolute inset-0 dark-grid-bg" />
@@ -156,19 +156,19 @@ export default function Hero() {
 
       {/* About blurb */}
       <SectionWrapper id="about" className="py-10">
-        <div className="glass-section py-10">
+        <div className="py-10">
           <div className="mx-auto max-w-6xl px-6">
-            <div className={`mb-10 ${isDark ? "text-left" : "text-center"}`}>
-              {!isDark && <p className="section-label">About Me</p>}
-              <h2 className="section-title" style={{ display: isDark ? "flex" : "block", alignItems: "center", gap: "1rem" }}>
-                {isDark && <span style={{ color: "var(--color-accent)" }}>/</span>}
-                Who I Am
-              </h2>
-              {!isDark && <div className="section-divider mx-auto" />}
-              {isDark && <div className="section-divider mt-4" />}
-            </div>
-            <div className={`mx-auto max-w-3xl space-y-6 text-base leading-relaxed sm:text-lg ${isDark ? "text-left border-l pl-8" : "text-center"}`} style={{ color: "var(--color-text-body)", borderColor: isDark ? "var(--color-border)" : "transparent" }}>
-              {profile.about.map((p, i) => <p key={i}>{p}</p>)}
+            <div className="glass-text p-8 mx-auto max-w-3xl">
+              <div className="mb-10 text-left">
+                <h2 className="section-title" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <span style={{ color: "var(--color-accent)" }}>/</span>
+                  Who I Am
+                </h2>
+                <div className="section-divider mt-4" />
+              </div>
+              <div className="space-y-6 text-base leading-relaxed sm:text-lg text-left border-l pl-8" style={{ color: "var(--color-text-body)", borderColor: "var(--color-border)" }}>
+                {profile.about.map((p, i) => <p key={i}>{p}</p>)}
+              </div>
             </div>
           </div>
         </div>

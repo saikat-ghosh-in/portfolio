@@ -10,18 +10,15 @@ export default function Education() {
 
   return (
     <SectionWrapper id="education" className="py-12">
-      <div className="glass-section py-12 relative">
-        {isDark && <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />}
+      <div className="py-12 relative">
+        <div className="absolute right-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />
         <div className="mx-auto max-w-6xl px-6">
           {/* Header */}
-          <div className={`mb-14 ${isDark ? "text-left" : "text-center"}`}>
-            {!isDark && <p className="section-label">Academics</p>}
-            <h2 className="section-title" style={isDark ? { display: "flex", alignItems: "center", gap: "1rem" } : {}}>
-              {isDark && <span style={{ color: "var(--color-accent)" }}>/</span>}
-              Education
+          <div className="mb-14 text-right">
+            <h2 className="section-title" style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "1rem" }}>
+              Education <span style={{ color: "var(--color-accent)" }}>/</span>
             </h2>
-            {!isDark && <div className="section-divider mx-auto" />}
-            {isDark && <div className="section-divider mt-4" />}
+            <div className="section-divider ml-auto mt-4" />
           </div>
 
           <motion.div

@@ -22,8 +22,8 @@ export default function Experience() {
 
   return (
     <SectionWrapper id="experience" className="py-12">
-      <div className="glass-section py-12 relative overflow-hidden">
-        {isDark && <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />}
+      <div className="py-12 relative overflow-hidden">
+        <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />
         
         {/* Subtle background decoration */}
         {isDark && <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-[var(--color-accent)] opacity-[0.03] blur-3xl pointer-events-none rounded-full" />}
@@ -31,14 +31,12 @@ export default function Experience() {
 
         <div className="mx-auto max-w-6xl px-6 relative z-10">
           {/* Header */}
-          <div className={`mb-16 ${isDark ? "text-left" : "text-center"}`}>
-            {!isDark && <p className="section-label">Career Journey</p>}
-            <h2 className="section-title" style={isDark ? { display: "flex", alignItems: "center", gap: "1rem" } : {}}>
-              {isDark && <span style={{ color: "var(--color-accent)" }}>/</span>}
+          <div className="mb-16 text-left">
+            <h2 className="section-title" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <span style={{ color: "var(--color-accent)" }}>/</span>
               Work Experience
             </h2>
-            {!isDark && <div className="section-divider mx-auto" />}
-            {isDark && <div className="section-divider mt-4" />}
+            <div className="section-divider mt-4" />
           </div>
 
           <div className="space-y-16">
