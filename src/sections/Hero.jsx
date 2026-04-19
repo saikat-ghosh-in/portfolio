@@ -43,7 +43,8 @@ export default function Hero() {
               </div>
             )}
 
-            <h1 className="mb-4" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: isDark ? "1.15" : "1.1" }}>
+            <h1 className="mb-4 relative" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: isDark ? "1.15" : "1.1" }}>
+              <span className="invisible pointer-events-none block w-full">{profile.title}</span>
               <motion.span
                 initial="hidden"
                 animate="visible"
@@ -55,7 +56,7 @@ export default function Hero() {
                     transition: { staggerChildren: 0.04 }
                   }
                 }}
-                className="inline-block relative"
+                className="absolute top-0 left-0 block w-full h-full"
               >
                 {isDark
                   ? profile.title.split("").map((char, i) => {
@@ -92,8 +93,9 @@ export default function Hero() {
               </motion.span>
             </h1>
 
-            <p className="mb-10 max-w-lg text-lg leading-relaxed" style={{ color: "var(--color-text-body)" }}>
-              {isTypingDone ? (
+            <p className="mb-10 max-w-lg text-lg leading-relaxed relative" style={{ color: "var(--color-text-body)" }}>
+              <span className="invisible pointer-events-none block w-full">{profile.tagline}</span>
+              {isTypingDone && (
                 <motion.span
                   initial="hidden"
                   animate="visible"
@@ -105,7 +107,7 @@ export default function Hero() {
                       transition: { staggerChildren: 0.015 }
                     }
                   }}
-                  className="inline-block relative"
+                  className="absolute top-0 left-0 block w-full h-full"
                 >
                   {profile.tagline.split("").map((char, i) => (
                     <motion.span
@@ -125,8 +127,6 @@ export default function Hero() {
                     </motion.span>
                   )}
                 </motion.span>
-              ) : (
-                <span style={{ opacity: 0 }}>{profile.tagline}</span>
               )}
             </p>
 
