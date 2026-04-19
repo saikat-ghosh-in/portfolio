@@ -1,0 +1,38 @@
+const projects = [
+  {
+    id: 1,
+    title: "Mercato",
+    tagline: "Production-Grade eCommerce Marketplace",
+    summary:
+      "A full-stack, multi-role eCommerce platform built from scratch as a portfolio project — designed with production-level architecture, real payment integration, and cloud deployment on Oracle Cloud Infrastructure.",
+    description:
+      "Mercato is a fully functional eCommerce marketplace supporting three distinct roles — customers, sellers, and admins — each with their own dashboard, workflows, and access controls. Built with a Spring Boot backend and a React frontend, the project was an exercise in building systems the right way — clean API design, backend-driven state, role-based security, and a CI/CD-friendly deployment setup on OCI.",
+    challenge:
+      "Building a scalable eCommerce platform from scratch requires managing intense concurrency scenarios, especially regarding cart reservation and payment processing. The challenge was architecting a strictly segregated system that guarantees robust transaction handling in the database during order fulfillment, while maintaining lightning-fast response times on the frontend for smooth product discovery. Additionally, building distinct, secure boundaries between three different user roles (Customer, Seller, Admin) added significant complexity to the authentication architecture and global state management.",
+    solution:
+      "I engineered a fully decoupled architecture with a monolithic Spring Boot backend serving a responsive React SPA. To handle inventory concurrency, I implemented a delta-based stock reservation system where the backend acts as the strict single source of truth, utilizing PostgreSQL transaction isolation. Spring Security with stateless JWTs ensures robust RBAC (Role-Based Access Control) across the different dashboard portals. On the frontend, Redux Toolkit heavily manages the complex multi-step checkout flow, which securely interacts with the Cashfree Payments API via backend-verified webhooks.",
+    modules: [
+      {
+        title: "Customer Journey",
+        description: "A frictionless, high-conversion shopping experience. It features Redux-persist for cart recovery, multi-address profile management, paginated and heavily filtered product discovery galleries, and a seamless 3-step checkout process with real-time order tracking.",
+      },
+      {
+        title: "Seller Dashboard (My Store)",
+        description: "A dedicated, isolated workspace for sellers. It provides full CRUD capabilities for catalog management, localized fulfillment tracking, and visual sales metrics, securely separated from other tenants and global platform operations.",
+      },
+      {
+        title: "Admin Control Center",
+        description: "Comprehensive oversight tooling for platform administrators. It includes global visibility over the marketplace, user ban/suspension workflows, abandoned cart analytics, and platform-wide transaction monitoring.",
+      }
+    ],
+    techFrontend: ["React 19", "Vite", "Redux Toolkit", "Tailwind CSS", "Material-UI", "Headless UI", "Axios"],
+    techBackend: ["Java 17", "Spring Boot", "Spring Security", "JPA/Hibernate", "PostgreSQL", "JWT Auth", "OCI & Nginx"],
+    tech: ["Java", "Spring Boot", "React", "Redux", "PostgreSQL", "Tailwind"],
+    liveUrl: "https://mercato-in.netlify.app",
+    githubUrl: "https://github.com/saikat-ghosh-in/mercato-backend",
+    featured: true,
+    status: "Live",
+  },
+];
+
+export default projects;

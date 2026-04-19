@@ -1,0 +1,457 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Dual Theme System
+   Light: Jasper.ai inspired (clean, corporate, trustworthy)
+   Dark: Webflow + Aptos Labs (geometric, premium, futuristic)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Light Mode (Jasper.ai) ─────────────────────────────────── */
+@theme {
+  /* Semantic colors — light defaults */
+  --color-bg-primary: #ffffff;
+  --color-bg-surface: #f9fafb;
+  --color-bg-surface-alt: #f3f4f6;
+  --color-bg-card: #ffffff;
+
+  --color-text-heading: #0f172a;
+  --color-text-body: #475569;
+  --color-text-muted: #64748b;
+  --color-text-on-accent: #ffffff;
+
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-soft: rgba(37, 99, 235, 0.1);
+  --color-accent-glow: rgba(37, 99, 235, 0.15);
+  --color-accent-2: #2563eb; /* no secondary in light */
+
+  --color-border: #e5e7eb;
+  --color-border-hover: rgba(37, 99, 235, 0.3);
+
+  --color-nav-bg: rgba(255, 255, 255, 0.85);
+  --color-nav-border: #e5e7eb;
+  --color-nav-shadow: rgba(0, 0, 0, 0.05);
+
+  --color-tag-bg: #ffffff;
+  --color-tag-text: #0f172a;
+  --color-tag-border: #e5e7eb;
+
+  --color-badge-bg: rgba(37, 99, 235, 0.1);
+  --color-badge-text: #2563eb;
+
+  --color-input-bg: #ffffff;
+  --color-input-border: #e5e7eb;
+  --color-input-text: #0f172a;
+
+  --color-footer-bg: #0f172a;
+  --color-footer-text: #94a3b8;
+  --color-footer-border: rgba(255, 255, 255, 0.1);
+
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+  --radius-button: 12px;
+  --radius-input: 12px;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 10px 30px rgba(0,0,0,0.08);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --heading-transform: none;
+  --heading-tracking: -0.02em;
+  --heading-weight: 800;
+
+  --color-glass-bg: rgba(255, 255, 255, 0.6);
+}
+
+/* ─── Dark Mode (Webflow + Aptos Labs) ───────────────────────── */
+[data-theme="dark"] {
+  --color-bg-primary: #08080c;
+  --color-bg-surface: #111118;
+  --color-bg-surface-alt: #0c0c14;
+  --color-bg-card: #111118;
+
+  --color-text-heading: #e2e8f0;
+  --color-text-body: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-on-accent: #ffffff;
+
+  --color-accent: #818cf8;
+  --color-accent-hover: #a5b4fc;
+  --color-accent-soft: rgba(129, 140, 248, 0.1);
+  --color-accent-glow: rgba(129, 140, 248, 0.25);
+  --color-accent-2: #d4ff00; /* neon green — used very sparingly */
+
+  --color-border: #1e1e2e;
+  --color-border-hover: rgba(129, 140, 248, 0.5);
+
+  --color-nav-bg: rgba(8, 8, 12, 0.85);
+  --color-nav-border: rgba(129, 140, 248, 0.15);
+  --color-nav-shadow: rgba(129, 140, 248, 0.05);
+
+  --color-tag-bg: #0c0c14;
+  --color-tag-text: #e2e8f0;
+  --color-tag-border: #1e1e2e;
+
+  --color-badge-bg: rgba(129, 140, 248, 0.1);
+  --color-badge-text: #818cf8;
+
+  --color-input-bg: #0c0c14;
+  --color-input-border: #1e1e2e;
+  --color-input-text: #e2e8f0;
+
+  --color-glass-bg: rgba(8, 8, 12, 0.6);
+  --color-footer-bg: #08080c;
+  --color-footer-text: #94a3b8;
+  --color-footer-border: #1e1e2e;
+
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+  --radius-button: 12px;
+  --radius-input: 12px;
+
+  --shadow-card: none;
+  --shadow-card-hover: 0 0 20px rgba(129, 140, 248, 0.08);
+
+  --font-display: "Oswald", "Impact", sans-serif;
+  --heading-transform: uppercase;
+  --heading-tracking: 0.05em;
+  --heading-weight: 900;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE RESETS & GLOBAL STYLES
+   ═══════════════════════════════════════════════════════════════ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    color: var(--color-text-body);
+    background-color: var(--color-bg-primary);
+    line-height: 1.7;
+    transition: background-color 0.01s;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text-heading);
+    line-height: 1.2;
+    font-weight: var(--heading-weight);
+    font-family: var(--font-display);
+    text-transform: var(--heading-transform);
+    letter-spacing: var(--heading-tracking);
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Theme Toggle ───────────────────────────────────────────── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  background: var(--color-bg-surface);
+  color: var(--color-text-heading);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent-glow);
+}
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Section Headers ────────────────────────────────────────── */
+.section-label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+
+.section-title {
+  font-size: clamp(1.875rem, 4vw, 2.5rem);
+  color: var(--color-text-heading);
+}
+
+.section-divider {
+  width: 3rem;
+  height: 4px;
+  margin-top: 1rem;
+  background: var(--color-accent);
+  border-radius: var(--radius-pill);
+}
+
+/* Dark mode overrides for section headers */
+[data-theme="dark"] .section-label {
+  letter-spacing: 0.2em;
+}
+[data-theme="dark"] .section-divider {
+  border-radius: 0;
+  width: 6rem;
+}
+
+/* ─── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+}
+.card:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-card-hover);
+}
+[data-theme="dark"] .card {
+  border-width: 2px;
+}
+[data-theme="dark"] .card:hover {
+  border-color: var(--color-accent);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-on-accent);
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  color: var(--color-text-on-accent);
+  box-shadow: 0 4px 20px var(--color-accent-glow);
+}
+[data-theme="dark"] .btn-primary {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-heading);
+  background: transparent;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-outline:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+[data-theme="dark"] .btn-outline {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ─── Tags / Pills ───────────────────────────────────────────── */
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-tag-text);
+  background: var(--color-tag-bg);
+  border: 1px solid var(--color-tag-border);
+  border-radius: var(--radius-pill);
+  transition: all 0.2s;
+}
+[data-theme="dark"] .tag {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-badge-text);
+  background: var(--color-badge-bg);
+  border-radius: var(--radius-pill);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg-primary); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in-up { animation: fade-in-up 0.6s ease-out both; }
+.animate-fade-in    { animation: fade-in 0.5s ease-out both; }
+
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-500 { animation-delay: 0.5s; }
+
+@keyframes typing {
+  from { max-width: 0 }
+  to { max-width: 100% }
+}
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--color-accent) }
+}
+
+.typing-container {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 4px solid var(--color-accent);
+  padding-right: 4px;
+  animation: 
+    typing 2s steps(30, end) forwards,
+    blink-caret 0.8s step-end infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: skewX(-20deg) translateX(-150%); }
+  100% { transform: skewX(-20deg) translateX(250%); }
+}
+
+.shimmer-badge {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-badge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2.5s infinite;
+}
+[data-theme="dark"] .shimmer-badge::after {
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(212, 255, 0, 0.4),
+    transparent
+  );
+}
+
+/* ─── Dark mode decorative elements ──────────────────────────── */
+[data-theme="dark"] .dark-grid-bg {
+  background-image:
+    linear-gradient(to right, #1e1e2e 1px, transparent 1px),
+    linear-gradient(to bottom, #1e1e2e 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  opacity: 0.4;
+}
+
+[data-theme="dark"] .accent-glow {
+  box-shadow: 0 0 15px var(--color-accent-glow);
+}
+
+.glass-section {
+  position: relative;
+}
+.glass-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: var(--color-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+  z-index: 0;
+}
+.glass-section > * {
+  position: relative;
+  z-index: 10;
+}
+
