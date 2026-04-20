@@ -82,7 +82,7 @@ export default function ProjectDetail() {
               {project.tagline}
             </motion.p>
 
-            <motion.div variants={fadeUp} className="flex flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               {project.liveUrl && project.liveUrl !== "#" && (
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
                   className="group relative flex-1 sm:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-full overflow-hidden"

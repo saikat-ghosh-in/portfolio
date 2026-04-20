@@ -1,7 +1,8 @@
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useCallback } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useScroll, useSpring, useMotionValue } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useLoading } from "../context/LoadingContext";
 import * as THREE from "three";
 
 // ─── GLSL: Simplex noise + displacement helper ─────────────────────────────
@@ -174,9 +175,10 @@ void main(){
 
 
 // ─── BlobMesh ───────────────────────────────────────────────────────────────
-function BlobMesh({ isDark }) {
+function BlobMesh({ isDark, onReady }) {
   const meshRef     = useRef();
   const materialRef = useRef();
+  const hasSignaled = useRef(false);
 
   const { viewport }        = useThree();
   const { scrollYProgress } = useScroll();
@@ -239,6 +241,12 @@ function BlobMesh({ isDark }) {
     materialRef.current.uniforms.u_mouse.value.set(
       smoothMouseX.get(), smoothMouseY.get()
     );
+
+    // Signal ready after first successful frame
+    if (!hasSignaled.current) {
+      hasSignaled.current = true;
+      onReady?.();
+    }
 
     // Scroll velocity → reactive Z lean
     const delta = scroll - prevScroll.current;
@@ -316,14 +324,13 @@ function BlobMesh({ isDark }) {
 export default function WebGLBlob() {
   const { mode } = useTheme();
   const isDark   = mode === "dark";
+  const { setBlobReady } = useLoading();
 
   return (
     <div
       className="fixed inset-0 z-[0] pointer-events-none"
       style={{
         mixBlendMode: isDark ? "screen" : "multiply",
-        // Light: 0.62 — vibrant poppy colours are vivid enough at this level
-        // Dark:  0.72 — additive glow on black
         opacity: isDark ? 0.72 : 0.62,
       }}
     >
@@ -332,7 +339,7 @@ export default function WebGLBlob() {
         dpr={[1, 1.5]}
         gl={{ antialias: true }}
       >
-        <BlobMesh isDark={isDark} />
+        <BlobMesh isDark={isDark} onReady={setBlobReady} />
       </Canvas>
     </div>
   );

@@ -1,17 +1,30 @@
 import { profile } from "../data/siteData";
 import { useTheme } from "../context/ThemeContext";
+import { useLoading } from "../context/LoadingContext";
 import SectionWrapper from "../components/SectionWrapper";
 import saikatPhoto from "../assets/Saikat_Ghosh_Photo.jpg";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect } from "react";
 
 export default function Hero() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
-  const [isTypingDone, setIsTypingDone] = useState(false);
+  const { setPhotoReady, dismissed } = useLoading();
+
+  // Preload profile photo and signal LoadingContext when done
+  useEffect(() => {
+    const img = new Image();
+    img.src = saikatPhoto;
+    if (img.complete) {
+      setPhotoReady();
+    } else {
+      img.onload = setPhotoReady;
+      img.onerror = setPhotoReady; // don't block on error
+    }
+  }, [setPhotoReady]);
 
   return (
-    <section id="hero" className="relative overflow-hidden pt-28 pb-0">
+    <section id="hero" className="relative overflow-hidden pt-16 md:pt-28 pb-0">
       {/* Decorative background */}
       {isDark && (
         <div className="absolute inset-0 dark-grid-bg" />
@@ -22,12 +35,12 @@ export default function Hero() {
 
       <div className="absolute left-0 bottom-0 h-px w-full" style={{ background: isDark ? "linear-gradient(to right, transparent, var(--color-accent), transparent)" : "var(--color-border)", opacity: isDark ? 0.4 : 1 }} />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-10 lg:py-28">
-        <div className="grid items-center gap-6 lg:gap-12 lg:grid-cols-2">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-6 md:py-10 lg:py-28">
+        <div className="grid items-center gap-4 lg:gap-12 lg:grid-cols-2">
           {/* Left — Text */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
+            animate={dismissed ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {profile.availableForWork && (
@@ -42,71 +55,42 @@ export default function Hero() {
               </div>
             )}
 
-            <h1 className="mb-4 relative" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: isDark ? "1.15" : "1.1" }}>
-              <span className="invisible pointer-events-none block w-full">{profile.title}</span>
-              <motion.span
-                initial="hidden"
-                animate="visible"
-                onAnimationComplete={() => setIsTypingDone(true)}
-                variants={{
-                  hidden: { opacity: 1 },
-                  visible: {
-                    opacity: 1,
-                    transition: { staggerChildren: 0.04 }
-                  }
-                }}
-                className="absolute top-0 left-0 block w-full h-full"
-              >
-                {profile.title.split("").map((char, i) => {
-                  // Determine word index to colorize alternating words
-                  const wordIndex = profile.title.substring(0, i).split(" ").length - 1;
-                  return (
-                    <motion.span
-                      key={i}
-                      variants={{ hidden: { opacity: 0, display: "none" }, visible: { opacity: 1, display: "inline" } }}
-                      style={{ color: wordIndex % 2 === 1 ? "var(--color-accent)" : "var(--color-text-heading)" }}
-                    >
-                      {char}
-                    </motion.span>
-                  );
-                })}
-                {!isTypingDone && (
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                    style={{ color: "var(--color-accent)", marginLeft: "2px", fontWeight: "300" }}
-                  >
-                    |
-                  </motion.span>
-                )}
-              </motion.span>
+            <h1 className="mb-4" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: isDark ? "1.15" : "1.1" }}>
+              {profile.title.split(" ").map((word, i) => (
+                <span
+                  key={i}
+                  style={{ color: i % 2 === 1 ? "var(--color-accent)" : "var(--color-text-heading)" }}
+                >
+                  {word}{" "}
+                </span>
+              ))}
             </h1>
 
             <motion.p 
-              className="mb-10 max-w-lg text-lg leading-relaxed relative" 
+              className="mb-6 md:mb-10 max-w-lg text-base sm:text-lg leading-relaxed" 
               style={{ color: "var(--color-text-body)" }}
               initial={{ opacity: 0, y: 15 }}
-              animate={isTypingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              animate={dismissed ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             >
               {profile.tagline}
             </motion.p>
 
             <motion.div 
-              className="flex flex-wrap gap-4"
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
               initial={{ opacity: 0, y: 20 }}
-              animate={isTypingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+              animate={dismissed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
             >
-              <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-primary">
+              <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-primary w-full sm:w-auto flex justify-center items-center">
                 View Projects
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </a>
-              <a href="https://drive.google.com/file/d/1u7es6TRXsnCC9OLujSa0Ofz8YLcvQ1eN/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="btn-outline group text-sm">
+              <a href="https://drive.google.com/file/d/1u7es6TRXsnCC9OLujSa0Ofz8YLcvQ1eN/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="btn-outline group text-sm w-full sm:w-auto flex justify-center items-center">
                 View Resume
-                <div className="ml-1 transition-all duration-300">
+                <div className="ml-2 transition-all duration-300">
                   <svg className="h-4 w-4 shrink-0 transition-colors duration-300 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
@@ -118,7 +102,7 @@ export default function Hero() {
           {/* Right — Avatar */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            animate={dismissed ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="flex justify-center lg:justify-end order-first lg:order-last mt-4 lg:mt-0"
           >

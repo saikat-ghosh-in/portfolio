@@ -9,9 +9,9 @@ export function useTheme() {
 export function ThemeProvider({ children }) {
   const [mode, setMode] = useState(() => {
     try {
-      return localStorage.getItem("portfolio-theme") || "light";
+      return localStorage.getItem("portfolio-theme") || "dark";
     } catch {
-      return "light";
+      return "dark";
     }
   });
 

@@ -2,7 +2,7 @@ const projects = [
   {
     id: 1,
     title: "Mercato",
-    tagline: "Production-Grade eCommerce Marketplace",
+    tagline: "eCommerce Marketplace",
     summary:
       "A full-stack, multi-role eCommerce platform built from scratch as a portfolio project — designed with production-level architecture, real payment integration, and cloud deployment on Oracle Cloud Infrastructure.",
     description:

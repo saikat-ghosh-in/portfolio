@@ -2,20 +2,32 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { navLinks, profile } from "../data/siteData";
 import { useTheme } from "../context/ThemeContext";
+import { useLoading } from "../context/LoadingContext";
 import ThemeToggle from "./ThemeToggle";
 import { motion } from "framer-motion";
 import { LiaMousePointerSolid } from "react-icons/lia";
 import { FiSun, FiMoon } from "react-icons/fi";
 
 function ThemeOnboarding({ isDark }) {
-  const [visible, setVisible] = useState(true);
-  
+  const { dismissed } = useLoading();
+  const [started, setStarted]   = useState(false);
+  const [visible, setVisible]   = useState(true);
+
+  // Wait for loading screen to dismiss, then start after 1s delay
   useEffect(() => {
+    if (!dismissed) return;
+    const t = setTimeout(() => setStarted(true), 1000);
+    return () => clearTimeout(t);
+  }, [dismissed]);
+
+  // Auto-hide 5s after the animation starts
+  useEffect(() => {
+    if (!started) return;
     const t = setTimeout(() => setVisible(false), 5000);
     return () => clearTimeout(t);
-  }, []);
+  }, [started]);
 
-  if (!visible) return null;
+  if (!started || !visible) return null;
 
   // Shared clip-path keyframes — same shape regardless of mode
   const clipFrames = [
