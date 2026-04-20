@@ -40,12 +40,17 @@ export default function ProjectDetail() {
 
   return (
     <>
-      <div className="min-h-screen pt-28 pb-0">
+      <motion.div 
+        className="min-h-screen pt-28 pb-0"
+        initial={{ clipPath: "circle(0% at 50% 50%)" }}
+        animate={{ clipPath: "circle(150% at 50% 50%)" }}
+        transition={{ duration: 1.0, ease: [0.7, 0, 0.1, 1] }}
+      >
 
         {/* HERO SECTION */}
-        <section className="glass-section relative px-6 py-12 md:py-24 mx-auto max-w-7xl overflow-hidden">
+        <section className="relative px-6 py-12 md:py-24 mx-auto max-w-7xl overflow-hidden">
 
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="relative z-10">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="relative z-10 glass-text p-8 md:p-12">
             <motion.div variants={fadeUp}>
               <Link to="/" className="mb-12 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-colors hover:text-[var(--color-accent)]" style={{ color: "var(--color-text-muted)" }}>
                 <FiArrowLeft className="h-4 w-4" /> Back to Portfolio
@@ -73,29 +78,29 @@ export default function ProjectDetail() {
               </motion.h1>
             </div>
 
-            <motion.p variants={fadeUp} className="max-w-2xl text-xl md:text-3xl font-light leading-relaxed mb-12" style={{ color: "var(--color-text-body)" }}>
+            <motion.p variants={fadeUp} className="max-w-2xl text-base sm:text-lg md:text-2xl font-light leading-relaxed mb-12" style={{ color: "var(--color-text-body)" }}>
               {project.tagline}
             </motion.p>
 
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+            <motion.div variants={fadeUp} className="flex flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               {project.liveUrl && project.liveUrl !== "#" && (
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                  className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full overflow-hidden w-full sm:w-auto"
+                  className="group relative flex-1 sm:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-full overflow-hidden"
                   style={{ backgroundColor: "var(--color-text-heading)", color: "var(--color-bg-primary)" }}
                 >
-                  <span className="relative z-10 font-bold uppercase tracking-widest text-sm">Visit Live Demo</span>
-                  <FiExternalLink className="relative z-10 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <span className="relative z-10 font-bold uppercase tracking-widest text-[10px] sm:text-sm text-center">Visit Live Demo</span>
+                  <FiExternalLink className="relative z-10 w-3 h-3 sm:w-4 sm:h-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                   <div className="absolute inset-0 transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100" style={{ backgroundColor: "var(--color-accent)" }} />
                 </a>
               )}
 
               {project.githubUrl && project.githubUrl !== "#" && (
                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-                  className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full w-full sm:w-auto transition-colors duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  className="group relative flex-1 sm:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-full transition-colors duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                   style={{ border: `2px solid var(--color-border)`, color: "var(--color-text-heading)" }}
                 >
-                  <span className="font-bold uppercase tracking-widest text-sm">View Source Code</span>
-                  <FiGithub className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12" />
+                  <span className="font-bold uppercase tracking-widest text-[10px] sm:text-sm text-center">Source Code</span>
+                  <FiGithub className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 transition-transform duration-300 group-hover:rotate-12" />
                 </a>
               )}
             </motion.div>
@@ -105,30 +110,30 @@ export default function ProjectDetail() {
 
 
         {/* THE CHALLENGE & SOLUTION (OR FALLBACK TO GENERIC DESCRIPTION) */}
-        <section className="glass-section px-6 py-24 md:py-40 mx-auto max-w-7xl">
+        <section className="px-6 py-24 md:py-40 mx-auto max-w-7xl">
           {project.challenge || project.solution ? (
-            <div className="grid md:grid-cols-2 gap-16 md:gap-24">
+            <div className="flex flex-col gap-12 md:gap-16 glass-text p-8 md:p-12">
               {project.challenge && (
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}>
-                  <h3 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-accent)" }}>The Challenge</h3>
-                  <p className="text-2xl md:text-4xl font-medium leading-tight" style={{ color: "var(--color-text-heading)" }}>
+                  <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-accent)" }}>The Challenge</h3>
+                  <p className="text-xl md:text-3xl font-medium leading-tight" style={{ color: "var(--color-text-heading)" }}>
                     {project.challenge}
                   </p>
                 </motion.div>
               )}
               {project.solution && (
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}>
-                  <h3 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-accent)" }}>The Solution</h3>
-                  <p className="text-lg md:text-xl leading-relaxed" style={{ color: "var(--color-text-body)" }}>
+                  <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-accent)" }}>The Solution</h3>
+                  <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: "var(--color-text-body)" }}>
                     {project.solution}
                   </p>
                 </motion.div>
               )}
             </div>
           ) : (
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="max-w-4xl mx-auto">
-              <h3 className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-accent)" }}>Overview</h3>
-              <p className="text-2xl md:text-4xl font-medium leading-tight mb-8" style={{ color: "var(--color-text-heading)" }}>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="max-w-4xl mx-auto glass-text p-8 md:p-12">
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-accent)" }}>Overview</h3>
+              <p className="text-xl md:text-3xl font-medium leading-tight mb-8" style={{ color: "var(--color-text-heading)" }}>
                 {project.description}
               </p>
             </motion.div>
@@ -137,14 +142,15 @@ export default function ProjectDetail() {
 
         {/* CORE MODULES (OR FALLBACK HIGHLIGHTS) */}
         {(project.modules?.length > 0 || project.highlights?.length > 0) && (
-          <section className="glass-section py-24 md:py-40 border-t" style={{ borderColor: "var(--color-border)" }}>
+          <section className="py-24 md:py-40">
             <div className="px-6 mx-auto max-w-7xl">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-20 md:mb-32">
-                <h2 className="font-display font-black text-4xl md:text-7xl uppercase mb-6" style={{ color: "var(--color-text-heading)" }}>
-                  {project.modules ? "Core Modules" : "Key Highlights"}
-                </h2>
-                <div className="w-24 h-2" style={{ backgroundColor: "var(--color-accent)" }} />
-              </motion.div>
+              <div className="glass-text p-8 md:p-16">
+                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-16 md:mb-24">
+                  <h2 className="font-display font-black text-4xl md:text-6xl uppercase mb-6" style={{ color: "var(--color-text-heading)" }}>
+                    {project.modules ? "Core Modules" : "Key Highlights"}
+                  </h2>
+                  <div className="w-24 h-2" style={{ backgroundColor: "var(--color-accent)" }} />
+                </motion.div>
 
               {project.modules ? (
                 <div className="space-y-12 sm:space-y-16">
@@ -162,8 +168,8 @@ export default function ProjectDetail() {
                           <FiCheckCircle className="w-7 h-7 sm:w-8 sm:h-8" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mt-3" style={{ color: "var(--color-text-heading)" }}>{mod.title}</h3>
-                          <p className="text-lg md:text-xl leading-relaxed" style={{ color: "var(--color-text-body)" }}>{mod.description}</p>
+                          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mt-3" style={{ color: "var(--color-text-heading)" }}>{mod.title}</h3>
+                          <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: "var(--color-text-body)" }}>{mod.description}</p>
                         </div>
                       </div>
                     </motion.div>
@@ -178,30 +184,25 @@ export default function ProjectDetail() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{ duration: 0.6, delay: idx * 0.1 }}
-                      className="p-8 md:p-12 rounded-3xl"
-                      style={{ 
-                        backgroundColor: "var(--color-glass-bg)",
-                        backdropFilter: "blur(18px)",
-                        WebkitBackdropFilter: "blur(18px)",
-                        border: `1px solid var(--color-border)` 
-                      }}
+                      className="p-8 md:p-12 rounded-3xl glass-text"
                     >
-                      <h3 className="text-2xl font-bold mb-4" style={{ color: "var(--color-text-heading)" }}>{h.heading}</h3>
-                      <p className="text-lg leading-relaxed" style={{ color: "var(--color-text-body)" }}>{h.detail}</p>
+                      <h3 className="text-xl md:text-2xl font-bold mb-4" style={{ color: "var(--color-text-heading)" }}>{h.heading}</h3>
+                      <p className="text-sm sm:text-base md:text-lg leading-relaxed" style={{ color: "var(--color-text-body)" }}>{h.detail}</p>
                     </motion.div>
                   ))}
                 </div>
               )}
+              </div>
             </div>
           </section>
         )}
 
         {/* TECHNICAL ARCHITECTURE */}
         {(project.techFrontend || project.techBackend || project.tech) && (
-          <section className="glass-section px-6 py-24 md:py-40 mx-auto max-w-7xl">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-24">
-              <h2 className="font-display font-black text-4xl md:text-6xl uppercase mb-6" style={{ color: "var(--color-text-heading)" }}>Technical Stack</h2>
-              <p className="text-xl max-w-2xl mx-auto" style={{ color: "var(--color-text-muted)" }}>Purpose-built using modern frameworks to ensure scale, security, and maintainability.</p>
+          <section className="px-6 py-24 md:py-40 mx-auto max-w-7xl">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="text-center mb-16 glass-text p-8 md:p-12 mx-auto max-w-4xl">
+              <h2 className="font-display font-black text-4xl md:text-5xl uppercase mb-6" style={{ color: "var(--color-text-heading)" }}>Technical Stack</h2>
+              <p className="text-sm sm:text-base md:text-lg max-w-2xl mx-auto" style={{ color: "var(--color-text-muted)" }}>Purpose-built using modern frameworks to ensure scale, security, and maintainability.</p>
             </motion.div>
 
             {project.techFrontend || project.techBackend ? (
@@ -209,13 +210,7 @@ export default function ProjectDetail() {
                 {project.techFrontend && (
                   <motion.div
                     initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-                    className="p-10 md:p-16 rounded-3xl" 
-                    style={{ 
-                      backgroundColor: "var(--color-glass-bg)",
-                      backdropFilter: "blur(18px)",
-                      WebkitBackdropFilter: "blur(18px)",
-                      border: `1px solid var(--color-border)` 
-                    }}
+                    className="p-10 md:p-16 rounded-3xl glass-text" 
                   >
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Frontend</h3>
                     <div className="flex flex-wrap gap-3">
@@ -228,13 +223,7 @@ export default function ProjectDetail() {
                 {project.techBackend && (
                   <motion.div
                     initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-                    className="p-10 md:p-16 rounded-3xl" 
-                    style={{ 
-                      backgroundColor: "var(--color-glass-bg)",
-                      backdropFilter: "blur(18px)",
-                      WebkitBackdropFilter: "blur(18px)",
-                      border: `1px solid var(--color-border)` 
-                    }}
+                    className="p-10 md:p-16 rounded-3xl glass-text" 
                   >
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Backend & Infra</h3>
                     <div className="flex flex-wrap gap-3">
@@ -248,13 +237,7 @@ export default function ProjectDetail() {
             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-                className="max-w-4xl mx-auto p-10 md:p-16 rounded-3xl text-center" 
-                style={{ 
-                  backgroundColor: "var(--color-glass-bg)",
-                  backdropFilter: "blur(18px)",
-                  WebkitBackdropFilter: "blur(18px)",
-                  border: `1px solid var(--color-border)` 
-                }}
+                className="max-w-4xl mx-auto p-10 md:p-16 rounded-3xl text-center glass-text" 
               >
                 <div className="flex flex-wrap justify-center gap-3">
                   {project.tech.map(t => (
@@ -266,7 +249,7 @@ export default function ProjectDetail() {
           </section>
         )}
 
-      </div>
+      </motion.div>
     </>
   );
 }

@@ -243,7 +243,7 @@ function BlobMesh({ isDark }) {
     // Scroll velocity → reactive Z lean
     const delta = scroll - prevScroll.current;
     scrollVelocity.current = THREE.MathUtils.lerp(
-      scrollVelocity.current, delta * 70, 0.14
+      scrollVelocity.current, delta * 120, 0.14
     );
     prevScroll.current = scroll;
 
@@ -260,27 +260,36 @@ function BlobMesh({ isDark }) {
     } else {
       yOffset = THREE.MathUtils.lerp(viewport.height * 0.12, -viewport.height * 0.12, scroll / 0.95);
     }
+
+    // Entrance animation: smooth growth and initial spin
+    const entranceRaw = Math.min(time / 2.0, 1.0); // 0 to 1 over 2 seconds
+    const easeOutExpo = entranceRaw === 1 ? 1 : 1 - Math.pow(2, -10 * entranceRaw);
+    
+    scale = scale * easeOutExpo;
     meshRef.current.scale.setScalar(scale);
 
     // X drift — sinusoidal across sections. Start slightly right.
     const xBaseOffset = viewport.width * 0.15;
-    const xDrift = xBaseOffset + Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.17;
+    const xDrift = xBaseOffset + Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.25;
     meshRef.current.position.set(xDrift, yOffset, 0);
+
+    // Initial spin that slows down as it reaches full size
+    const initialSpin = (1 - easeOutExpo) * Math.PI * 4;
 
     // Rotation
     meshRef.current.rotation.x = THREE.MathUtils.lerp(
       meshRef.current.rotation.x,
-      -smoothMouseY.get() * 0.40 + scroll * 0.72,
+      -smoothMouseY.get() * 0.40 + scroll * 1.8 + initialSpin * 0.5,
       0.04
     );
     meshRef.current.rotation.y = THREE.MathUtils.lerp(
       meshRef.current.rotation.y,
-      smoothMouseX.get() * 0.40 + time * 0.024 + scrollVelocity.current * 0.26,
+      smoothMouseX.get() * 0.40 + time * 0.024 + scrollVelocity.current * 0.5 + initialSpin,
       0.04
     );
     meshRef.current.rotation.z = THREE.MathUtils.lerp(
       meshRef.current.rotation.z,
-      scrollVelocity.current * 0.12,
+      scrollVelocity.current * 0.25 + initialSpin * 0.2,
       0.07
     );
   });

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { navLinks, profile } from "../data/siteData";
 import { useTheme } from "../context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
@@ -155,10 +156,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+      if (location.pathname !== "/") return;
       const sections = navLinks.map((l) => l.href.replace("#", ""));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -170,14 +174,23 @@ export default function Navbar() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   const handleLinkClick = (e, href) => {
     e.preventDefault();
     setMobileOpen(false);
     const id = href.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+
+    if (location.pathname !== "/") {
+      navigate("/" + href);
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 150);
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const isDark = mode === "dark";

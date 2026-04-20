@@ -14,10 +14,28 @@ export default function Contact() {
   const [status, setStatus] = useState("idle");
 
   const handleChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("submitting");
-    setTimeout(() => { setStatus("success"); setFormData({ name: "", email: "", message: "" }); setTimeout(() => setStatus("idle"), 3000); }, 1500);
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/saikat.ghosh.in99@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      setStatus("error");
+    }
+    setTimeout(() => setStatus("idle"), 3000);
   };
 
   return (
@@ -90,6 +108,7 @@ export default function Contact() {
                     {status === "submitting" ? "Sending..." : contact.form.buttonText}
                   </button>
                   {status === "success" && <p className="mt-3 text-center text-sm font-medium" style={{ color: "#16a34a" }}>Message sent successfully!</p>}
+                  {status === "error" && <p className="mt-3 text-center text-sm font-medium" style={{ color: "#dc2626" }}>Failed to send message. Please try again.</p>}
                 </div>
               </form>
             </motion.div>

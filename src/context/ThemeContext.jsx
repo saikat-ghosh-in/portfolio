@@ -60,8 +60,8 @@ export function ThemeProvider({ children }) {
         { clipPath: `circle(${maxRadius}px at ${x}px ${y}px)` },
       ],
       {
-        duration: 600,
-        easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+        duration: 800,
+        easing: "cubic-bezier(0.7, 0, 0.1, 1)",
         fill: "forwards",
       }
     );
@@ -69,7 +69,7 @@ export function ThemeProvider({ children }) {
     // Swap theme at the midpoint
     setTimeout(() => {
       setMode(newMode);
-    }, 250);
+    }, 350);
 
     anim.onfinish = () => {
       overlay.style.display = "none";

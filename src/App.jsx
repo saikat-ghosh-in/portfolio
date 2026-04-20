@@ -1,3 +1,4 @@
+import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/Navbar";
@@ -11,7 +12,9 @@ import Certifications from "./sections/Certifications";
 import Education from "./sections/Education";
 import Contact from "./sections/Contact";
 import ProjectDetail from "./pages/ProjectDetail";
-import WebGLBlob from "./components/WebGLBlob";
+
+const WebGLBlob = lazy(() => import("./components/WebGLBlob"));
+
 function Home() {
   return (
     <main className="relative z-10">
@@ -30,7 +33,9 @@ export default function App() {
   return (
     <ThemeProvider>
       <div className="min-h-screen font-sans antialiased relative" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-body)" }}>
-        <WebGLBlob />
+        <Suspense fallback={null}>
+          <WebGLBlob />
+        </Suspense>
         <Navbar />
         <div className="relative z-10">
           <Routes>

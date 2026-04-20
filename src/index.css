@@ -155,6 +155,12 @@
     letter-spacing: var(--heading-tracking);
   }
 
+  p {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
   a {
     color: var(--color-accent);
     text-decoration: none;
