@@ -5,29 +5,37 @@ const experience = [
     location: "Kolkata, West Bengal",
     roles: [
       {
-        title: "Consultant",
-        period: "Apr 2024 - Present",
-        summary: "Leading backend development for a large-scale retail platform, focusing on service scalability, API design, and production reliability.",
+        title: "Senior Consultant",
+        period: "Apr 2026 - Present",
+        summary: "Focusing on production stability, system reliability, and proactive risk management in core retail services.",
         bullets: [
-          "Designed and developed scalable backend services using Java, Spring Boot, Hibernate, and SQL Server for a high-traffic retail platform serving multiple business units. Contributed to a 50% improvement in team productivity and a 90% reduction in manual operational effort through backend automation.",
-          "Architected and implemented a secure authentication and authorization system using Spring Security, JWT, and Role-Based Access Control (RBAC), along with comprehensive audit logging to meet enterprise data security and compliance requirements.",
-          "Built and optimized RESTful APIs and backend utilities used across internal retail operations, reducing manual intervention in key workflows and improving end-to-end process efficiency.",
-          "Established code review practices and led root cause analysis sessions for production incidents, improving system stability and consistently meeting SLA commitments for critical services.",
-          "Worked directly with clients for requirement gathering, solution design validation, and iterative feedback — bridging the gap between business needs and technical delivery.",
+          "Eliminated a daily connection-reliability issue on a business-critical operations dashboard, by replacing a scheduled keep-alive workaround with a proper session-init fix.",
+          "Proactively resolved a subtle dependency-management bug in core services before it caused a production incident, improving code reliability and reducing future maintenance risk for the team.",
         ],
-        tags: ["Java", "Spring Boot", "Hibernate", "SQL Server", "JWT", "RBAC", "REST APIs"],
+        tags: ["Java", "Session Management", "Production Stability", "Dependency Management", "Core Services"],
+      },
+      {
+        title: "Consultant",
+        period: "Apr 2024 - Mar 2026",
+        summary: "Led backend development for a large-scale retail platform, focusing on service scalability, API design, and production reliability.",
+        bullets: [
+          "Built and maintained scalable Java backend services using Spring Boot, Hibernate/JPA, and SQL Server for an enterprise retail platform, improving team productivity by 50% and reducing manual effort by 90%.",
+          "Implemented authentication and authorization using Spring Security, JWT, and RBAC with audit logging for enterprise compliance.",
+          "Led code reviews and root cause analysis for production issues, ensuring system stability and SLA-compliant delivery.",
+          "Built and optimized RESTful APIs for retail operations, and collaborated with clients on requirement analysis and solution design validation across project milestones.",
+        ],
+        tags: ["Java", "Spring Boot", "Hibernate/JPA", "SQL Server", "Spring Security", "JWT", "RBAC", "RESTful APIs", "Client Collaboration"],
       },
       {
         title: "Associate Consultant",
         period: "Aug 2022 - Mar 2024",
         summary: "Built backend automation and data systems for a retail client, focused on reducing manual workflows and ensuring high availability of production systems.",
         bullets: [
-          "Developed Java and Spring Boot-based backend automation solutions that eliminated repetitive manual data processing pipelines for a retail client, resulting in a 40% reduction in processing time and a 60% improvement in report generation speed.",
-          "Designed and implemented database-driven systems using JPA and Hibernate for data extraction, transformation, reporting, and monitoring — achieving 99.8% data accuracy across critical business reports.",
-          "Owned production support for backend services, maintaining 99.9% uptime by proactively monitoring systems, resolving incidents within SLA timelines, and ensuring continuous service availability for business-critical operations.",
-          "Analyzed and documented legacy systems to enable smooth team transitions; led structured knowledge transfer sessions that reduced new joiner onboarding effort by 50% and improved overall team efficiency.",
+          "Developed Java/Spring Boot backend automation for a retail client, reducing manual data processing by 40% and improving report generation speed by 60%.",
+          "Built JPA/Hibernate-based data extraction and reporting systems, achieving 99.8% data accuracy and 99.9% production uptime.",
+          "Maintained production systems and resolved critical issues within SLA timelines, reducing downtime by 25% through proactive monitoring.",
         ],
-        tags: ["Java", "Spring Boot", "JPA", "Hibernate", "SQL Server", "Production Support", "Agile"],
+        tags: ["Java", "Spring Boot", "JPA/Hibernate", "Database Reporting", "Production Support", "Proactive Monitoring", "SLA Compliance"],
       }
     ]
   }

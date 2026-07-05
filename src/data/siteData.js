@@ -4,7 +4,7 @@ export const profile = {
   title: "Java Developer & Full-Stack Engineer",
   tagline: "Building scalable backend systems with Java, Spring Boot & microservices — and shipping the frontend too.",
   about: [
-    "I am a Java Developer with nearly 4 years of experience designing and delivering scalable backend systems using Java, Spring Boot, and JPA/Hibernate for retail enterprise platforms. I am highly proficient in REST API development, microservices architecture, and implementing secure authentication mechanisms like JWT and RBAC with Spring Security.",
+    "I am a Java Developer with 3.8+ years of experience designing and delivering scalable backend systems using Java, Spring Boot, and JPA/Hibernate for retail enterprise platforms. I am highly proficient in REST API development, microservices architecture, and implementing secure authentication mechanisms like JWT and RBAC with Spring Security.",
     "In addition to my extensive backend expertise, I possess strong hands-on full-stack capabilities utilizing React and Redux Toolkit. I recently architected and deployed Mercato, a production-grade eCommerce platform complete with payment gateway integrations, demonstrating my ability to manage the full software development lifecycle from end to end.",
     "I am deeply committed to writing clean, maintainable code, adhering to SOLID principles, and building high-performance systems with a focus on enterprise-level reliability."
   ],
