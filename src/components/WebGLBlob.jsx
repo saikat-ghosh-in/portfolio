@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect, useCallback } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useScroll, useSpring, useMotionValue } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
@@ -207,27 +207,15 @@ function BlobMesh({ isDark, onReady }) {
     };
   }, [mouseX, mouseY]);
 
-  // ── Colour palettes ──────────────────────────────────────────────────────
-  //
-  // Light mode (multiply blend) — use vivid, fully saturated hues so that
-  // even at 0.60 opacity through multiply they look POPPY, not greyed-out.
-  //   A — bright violet   #a855f7   (Tailwind purple-500)
-  //   B — hot rose        #f43f5e   (Tailwind rose-500)
-  //   C — vivid orange    #fb923c   (Tailwind orange-400)
-  //   D — electric cyan   #22d3ee   (Tailwind cyan-400)
-  //
-  // Dark mode (screen blend) — luminous neons
-  //   A — electric indigo #4338ca
-  //   B — vivid violet    #7c3aed
-  //   C — neon cyan       #0891b2
-  //   D — soft lavender   #a78bfa
+  // Light mode (multiply blend) — vibrant Apple palette
+  // Dark mode (screen blend) — luminous neon Apple colors
   const uniforms = useMemo(() => ({
     u_time:   { value: 0.0 },
     u_mouse:  { value: new THREE.Vector2(0, 0) },
-    u_colorA: { value: new THREE.Color(isDark ? "#4338ca" : "#a855f7") },
-    u_colorB: { value: new THREE.Color(isDark ? "#7c3aed" : "#f43f5e") },
-    u_colorC: { value: new THREE.Color(isDark ? "#0891b2" : "#fb923c") },
-    u_colorD: { value: new THREE.Color(isDark ? "#a78bfa" : "#22d3ee") },
+    u_colorA: { value: new THREE.Color(isDark ? "#0071e3" : "#5856d6") },
+    u_colorB: { value: new THREE.Color(isDark ? "#bf5af2" : "#ff2d55") },
+    u_colorC: { value: new THREE.Color(isDark ? "#30d158" : "#ff9500") },
+    u_colorD: { value: new THREE.Color(isDark ? "#5ac8fa" : "#5ac8fa") },
   }), [isDark]);
 
   useFrame((state) => {
@@ -331,7 +319,7 @@ export default function WebGLBlob() {
       className="fixed inset-0 z-[0] pointer-events-none"
       style={{
         mixBlendMode: isDark ? "screen" : "multiply",
-        opacity: isDark ? 0.72 : 0.62,
+        opacity: isDark ? 0.85 : 0.45,
       }}
     >
       <Canvas

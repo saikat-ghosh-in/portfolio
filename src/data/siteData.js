@@ -98,7 +98,7 @@ export const certifications = [
 // ─── Contact Form Fields ─────────────────────────────────────────────────────
 export const contactFields = [
   { id: "name", label: "Name", type: "text", placeholder: "Your name" },
-  { id: "email", label: "Email", type: "email", placeholder: "you@example.com" },
+  { id: "email", label: "Email", type: "email", placeholder: "Your email" },
   { id: "message", label: "Message", type: "textarea", placeholder: "Your message…" },
 ];
 
@@ -112,7 +112,7 @@ export const contact = {
   form: {
     fields: [
       { name: "name", label: "Name", type: "text", placeholder: "Your name" },
-      { name: "email", label: "Email", type: "email", placeholder: "you@example.com" },
+      { name: "email", label: "Email", type: "email", placeholder: "Your email" },
       { name: "message", label: "Message", type: "textarea", placeholder: "Your message…" },
     ],
     buttonText: "Send Message",

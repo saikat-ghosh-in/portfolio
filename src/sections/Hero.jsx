@@ -1,149 +1,154 @@
 import { profile } from "../data/siteData";
 import { useTheme } from "../context/ThemeContext";
-import { useLoading } from "../context/LoadingContext";
 import SectionWrapper from "../components/SectionWrapper";
 import saikatPhoto from "../assets/Saikat_Ghosh_Photo.jpg";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 
 export default function Hero() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
-  const { setPhotoReady, dismissed } = useLoading();
-
-  // Preload profile photo and signal LoadingContext when done
-  useEffect(() => {
-    const img = new Image();
-    img.src = saikatPhoto;
-    if (img.complete) {
-      setPhotoReady();
-    } else {
-      img.onload = setPhotoReady;
-      img.onerror = setPhotoReady; // don't block on error
-    }
-  }, [setPhotoReady]);
 
   return (
-    <section id="hero" className="relative overflow-hidden pt-16 md:pt-28 pb-0">
+    <section id="hero" className="relative overflow-hidden pt-24 md:pt-32 pb-0 min-h-[100svh] flex flex-col justify-center">
       {/* Decorative background */}
       {isDark && (
         <div className="absolute inset-0 dark-grid-bg" />
       )}
       {!isDark && (
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30" />
+        <div className="absolute inset-0 opacity-40" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0)",
+          backgroundSize: "40px 40px",
+        }} />
       )}
 
-      <div className="absolute left-0 bottom-0 h-px w-full" style={{ background: isDark ? "linear-gradient(to right, transparent, var(--color-accent), transparent)" : "var(--color-border)", opacity: isDark ? 0.4 : 1 }} />
-
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-6 md:py-10 lg:py-28">
-        <div className="grid items-center gap-4 lg:gap-12 lg:grid-cols-2">
-          {/* Left — Text */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={dismissed ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            {profile.availableForWork && (
-              <div className="mb-6 inline-flex items-center gap-3">
-                <div className="relative flex h-2 w-2 flex-shrink-0 items-center justify-center">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "var(--color-accent)" }} />
-                  <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: "var(--color-accent)" }} />
-                </div>
-                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--color-text-muted)" }}>
-                  Open to new opportunities
-                </span>
-              </div>
-            )}
-
-            <h1 className="mb-4" style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: isDark ? "1.15" : "1.1" }}>
-              {profile.title.split(" ").map((word, i) => (
-                <span
-                  key={i}
-                  style={{ color: i % 2 === 1 ? "var(--color-accent)" : "var(--color-text-heading)" }}
-                >
-                  {word}{" "}
-                </span>
-              ))}
-            </h1>
-
-            <motion.p 
-              className="mb-6 md:mb-10 max-w-lg text-base sm:text-lg leading-relaxed" 
-              style={{ color: "var(--color-text-body)" }}
-              initial={{ opacity: 0, y: 15 }}
-              animate={dismissed ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+      <div className="relative z-10 mx-auto max-w-5xl px-6 py-10 md:py-16 lg:py-24 w-full text-center flex flex-col items-center">
+        {/* Avatar — centered top */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
+          className="mb-6 flex justify-center"
+        >
+          <div className="relative group">
+            {isDark && <div className="absolute -inset-2 opacity-40 blur-2xl transition-opacity duration-700 group-hover:opacity-60" style={{ background: "linear-gradient(135deg, #0071e3, #bf5af2, #5ac8fa)" }} />}
+            <div
+              className="overflow-hidden transition-[transform,box-shadow] duration-700"
+              style={{
+                width: "clamp(120px, 20vw, 160px)",
+                height: "clamp(120px, 20vw, 160px)",
+                borderRadius: "50%",
+                border: isDark ? "2px solid rgba(255,255,255,0.1)" : "3px solid var(--color-bg-surface)",
+                boxShadow: isDark ? "0 0 60px rgba(41,151,255,0.15)" : "0 20px 60px rgba(0,0,0,0.08)",
+              }}
             >
-              {profile.tagline}
-            </motion.p>
-
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={dismissed ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
-            >
-              <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }} className="btn-primary w-full sm:w-auto flex justify-center items-center">
-                View Projects
-                <svg className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-              <a href="https://drive.google.com/file/d/1u7es6TRXsnCC9OLujSa0Ofz8YLcvQ1eN/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="btn-outline group text-sm w-full sm:w-auto flex justify-center items-center">
-                View Resume
-                <div className="ml-2 transition-all duration-300">
-                  <svg className="h-4 w-4 shrink-0 transition-colors duration-300 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </div>
-              </a>
-            </motion.div>
-          </motion.div>
-
-          {/* Right — Avatar */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={dismissed ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="flex justify-center lg:justify-end order-first lg:order-last mt-4 lg:mt-0"
-          >
-            <div className="relative group">
-              {isDark && <div className="absolute -inset-1 opacity-30 blur-lg transition duration-500 group-hover:opacity-60" style={{ backgroundColor: "var(--color-accent)" }} />}
-              <div
-                className="overflow-hidden transition-all duration-500"
-                style={{
-                  width: "clamp(200px, 45vw, 350px)",
-                  height: "clamp(200px, 45vw, 350px)",
-                  borderRadius: "var(--radius-card)",
-                  border: isDark ? "none" : "4px solid var(--color-bg-surface)",
-                  boxShadow: isDark ? "0 0 30px var(--color-accent-glow)" : "0 20px 60px rgba(0,0,0,0.1)",
-                  filter: "none",
-                }}
-              >
-                <img
-                  src={saikatPhoto}
-                  alt="Saikat Ghosh"
-                  className="h-full w-full object-cover object-top transition-all duration-500"
-                  style={{ transform: "scale(1.05)" }}
-                />
-              </div>
+              <img
+                src={saikatPhoto}
+                alt={profile.name}
+                className="h-full w-full object-cover object-top"
+                style={{ transform: "scale(1.1)" }}
+              />
             </div>
+          </div>
+        </motion.div>
+
+        {/* Name */}
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+          className="mb-4 text-2xl font-semibold"
+          style={{ color: "var(--color-text-heading)", letterSpacing: "-0.02em" }}
+        >
+          {profile.name}
+        </motion.h2>
+
+        {/* Status badge */}
+        {profile.availableForWork && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
+            className="mb-6 inline-flex items-center gap-2.5 px-4 py-2"
+            style={{
+              background: "var(--color-accent-soft)",
+              borderRadius: "var(--radius-pill)",
+              border: "1px solid var(--color-border)",
+            }}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75" style={{ backgroundColor: "#30d158" }} />
+              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: "#30d158" }} />
+            </span>
+            <span className="text-xs font-medium" style={{ color: "var(--color-text-body)" }}>
+              Available for new opportunities
+            </span>
           </motion.div>
-        </div>
+        )}
+
+        {/* Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
+          className="mb-6 max-w-4xl"
+          style={{
+            fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+            lineHeight: "1.1",
+            letterSpacing: "-0.03em",
+            fontWeight: 700,
+            color: "var(--color-text-heading)"
+          }}
+        >
+          {profile.title.split(" ").map((word, i) => (
+            <span key={i} style={{ color: i % 2 === 1 ? "var(--color-accent)" : "inherit" }}>
+              {word}{" "}
+            </span>
+          ))}
+        </motion.h1>
+
+        {/* Tagline */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5, ease: [0.23, 1, 0.32, 1] }}
+          className="mx-auto mb-10 max-w-2xl text-lg sm:text-xl leading-relaxed"
+          style={{ color: "var(--color-text-body)" }}
+        >
+          {profile.tagline}
+        </motion.p>
+
+        {/* CTAs — Apple-style link buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center items-center"
+        >
+          <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }); }}
+            className="btn-primary h-12 px-8 flex w-full sm:w-auto items-center justify-center text-base"
+          >
+            View Projects
+          </a>
+          <a href="https://drive.google.com/file/d/1u7es6TRXsnCC9OLujSa0Ofz8YLcvQ1eN/view?usp=sharing" target="_blank" rel="noopener noreferrer"
+            className="btn-outline h-12 px-8 flex w-full sm:w-auto items-center justify-center text-base"
+          >
+            View Resume
+            <svg className="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </motion.div>
       </div>
 
-      {/* About blurb */}
-      <SectionWrapper id="about" className="py-10">
+      {/* About section */}
+      <SectionWrapper id="about" className="py-16">
         <div className="py-10">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="glass-text p-8 md:p-12 mx-auto max-w-5xl">
-              <div className="mb-10 text-left">
-                <h2 className="section-title" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <span style={{ color: "var(--color-accent)" }}>/</span>
-                  Who I Am
-                </h2>
-                <div className="section-divider mt-4" />
+          <div className="mx-auto max-w-5xl px-6">
+            <div className="glass-text p-8 md:p-14 mx-auto max-w-4xl">
+              <div className="mb-10 text-center">
+                <h2 className="section-title">About Me</h2>
               </div>
-              <div className="space-y-6 text-sm sm:text-base leading-relaxed text-left border-l pl-6 sm:pl-8" style={{ color: "var(--color-text-body)", borderColor: "var(--color-border)" }}>
+              <div className="space-y-6 text-base leading-relaxed" style={{ color: "var(--color-text-body)" }}>
                 {profile.about.map((p, i) => <p key={i}>{p}</p>)}
               </div>
             </div>

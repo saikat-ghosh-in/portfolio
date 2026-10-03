@@ -29,8 +29,8 @@ export default function SectionWrapper({ id, className = "", children }) {
     <section
       id={id}
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      className={`transition-[opacity,transform] duration-350 ease-[var(--ease-out)] ${
+        visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
       } ${className}`}
     >
       {children}
