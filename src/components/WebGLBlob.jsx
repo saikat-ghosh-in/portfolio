@@ -54,8 +54,8 @@ float snoise(vec3 v){
 
 // Two-octave displacement evaluated at point p at time t
 float displacement(vec3 p, float t){
-  float n1 = snoise(vec3(p.x*1.3, p.y*1.3 + t*0.32, p.z*1.3 - t*0.22));
-  float n2 = snoise(vec3(p.x*2.6+0.5, p.y*2.6 - t*0.50, p.z*2.6 + t*0.38)) * 0.30;
+  float n1 = snoise(vec3(p.x*1.3, p.y*1.3 + t*0.14, p.z*1.3 - t*0.10));
+  float n2 = snoise(vec3(p.x*2.6+0.5, p.y*2.6 - t*0.20, p.z*2.6 + t*0.16)) * 0.30;
   return n1 + n2;
 }
 `;
@@ -90,12 +90,12 @@ void main(){
   float cosA     = dot(normalize(position), mouseDir);
   float mdist    = 1.0 - max(cosA, 0.0);   // 0 = facing mouse, 1 = away
 
-  float puff  = exp(-mdist * mdist * 6.0)  * 0.32;
-  float ring  = smoothstep(0.55, 0.40, mdist) * smoothstep(0.22, 0.40, mdist) * 0.09;
+  float puff  = exp(-mdist * mdist * 5.0)  * 0.62;
+  float ring  = smoothstep(0.55, 0.40, mdist) * smoothstep(0.22, 0.40, mdist) * 0.20;
   // Swirl uses 3D position + time — no seam
   float swirl = snoise(position * 2.5 + vec3(u_mouse.x, u_mouse.y, 0.0) * 0.9
-                       + vec3(0.0, 0.0, u_time * 0.55))
-                * 0.06 * exp(-mdist * mdist * 9.0);
+                       + vec3(0.0, 0.0, u_time * 0.22))
+                * 0.14 * exp(-mdist * mdist * 7.0);
 
   float mInfluence = puff + ring + swirl;
 
@@ -247,14 +247,14 @@ function BlobMesh({ isDark, onReady }) {
     const baseScale = Math.min(viewport.width, viewport.height) * 0.45;
     let scale = baseScale;
 
-    // Y parallax
+    // Y parallax — reduced range so blob drifts less on its own
     let yOffset;
     if (scroll > 0.95) {
       const excess = (scroll - 0.95) / 0.05;
-      yOffset = THREE.MathUtils.lerp(-viewport.height * 0.1, -viewport.height * 0.5, excess);
-      scale   = baseScale * (1 + excess * 0.28);
+      yOffset = THREE.MathUtils.lerp(-viewport.height * 0.05, -viewport.height * 0.3, excess);
+      scale   = baseScale * (1 + excess * 0.18);
     } else {
-      yOffset = THREE.MathUtils.lerp(viewport.height * 0.12, -viewport.height * 0.12, scroll / 0.95);
+      yOffset = THREE.MathUtils.lerp(viewport.height * 0.06, -viewport.height * 0.06, scroll / 0.95);
     }
 
     // Entrance animation: smooth growth and initial spin
@@ -272,21 +272,21 @@ function BlobMesh({ isDark, onReady }) {
     // Initial spin that slows down as it reaches full size
     const initialSpin = (1 - easeOutExpo) * Math.PI * 4;
 
-    // Rotation
+    // Rotation — purely idle + scroll driven; mouse only deforms surface via shader
     meshRef.current.rotation.x = THREE.MathUtils.lerp(
       meshRef.current.rotation.x,
-      -smoothMouseY.get() * 0.40 + scroll * 1.8 + initialSpin * 0.5,
+      scroll * 0.6 + initialSpin * 0.5,
       0.04
     );
     meshRef.current.rotation.y = THREE.MathUtils.lerp(
       meshRef.current.rotation.y,
-      smoothMouseX.get() * 0.40 + time * 0.024 + scrollVelocity.current * 0.5 + initialSpin,
+      time * 0.006 + scrollVelocity.current * 0.2 + initialSpin,
       0.04
     );
     meshRef.current.rotation.z = THREE.MathUtils.lerp(
       meshRef.current.rotation.z,
-      scrollVelocity.current * 0.25 + initialSpin * 0.2,
-      0.07
+      scrollVelocity.current * 0.1 + initialSpin * 0.2,
+      0.05
     );
   });
 

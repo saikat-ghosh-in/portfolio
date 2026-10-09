@@ -69,14 +69,14 @@ export default function ProjectDetail() {
             <div className="flex flex-wrap items-center gap-6 md:gap-12 mb-6">
               <motion.h1
                 variants={fadeUp}
-                className="font-display font-black leading-none"
-                style={{ fontSize: "clamp(3rem, 10vw, 8rem)", color: "var(--color-text-heading)", textTransform: "uppercase", letterSpacing: "-0.02em" }}
+                className="font-display font-black leading-none w-full"
+                style={{ fontSize: "clamp(2.5rem, 8vw, 7rem)", color: "var(--color-text-heading)", textTransform: "uppercase", letterSpacing: "-0.02em" }}
               >
                 {project.title}
               </motion.h1>
             </div>
 
-            <motion.p variants={fadeUp} className="max-w-2xl text-base sm:text-lg md:text-2xl font-light leading-relaxed mb-12" style={{ color: "var(--color-text-body)" }}>
+            <motion.p variants={fadeUp} className="max-w-2xl text-sm sm:text-base md:text-xl font-light leading-relaxed mb-10" style={{ color: "var(--color-text-body)" }}>
               {project.tagline}
             </motion.p>
 
@@ -140,7 +140,7 @@ export default function ProjectDetail() {
 
         {/* CORE MODULES (OR FALLBACK HIGHLIGHTS) */}
         {(project.modules?.length > 0 || project.highlights?.length > 0) && (
-          <section className="py-24 md:py-40">
+          <section className="py-24 md:py-40 section-tint">
             <div className="px-6 mx-auto max-w-7xl">
               <div className="glass-text p-8 md:p-16">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-16 md:mb-24">

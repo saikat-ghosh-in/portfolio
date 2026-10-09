@@ -1,48 +1,50 @@
 import SectionWrapper from "../components/SectionWrapper";
 import { education } from "../data/siteData";
-import { FiBookOpen } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 export default function Education() {
   return (
-    <SectionWrapper id="education" className="py-20">
-      <div className="py-12 relative">
-        <div className="mx-auto max-w-5xl px-6">
-          {/* Header */}
-          <div className="mb-16 text-center">
-            <h2 className="section-title">Education</h2>
-          </div>
+    <section id="education" className="py-20" style={{ backgroundColor: "var(--color-bg-primary)" }}>
+      <div className="mx-auto max-w-5xl px-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
+        >
+          <p className="mb-3 text-sm font-medium" style={{ color: "var(--color-text-muted)" }}>Education</p>
+          <h2 className="text-4xl font-semibold tracking-tight" style={{ color: "var(--color-text-heading)" }}>
+            Academic Background.
+          </h2>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-            viewport={{ once: true, margin: "-80px" }}
-            className="mx-auto max-w-xl"
-          >
-            <div className="card p-8 text-center">
-              <div className="mb-6 flex justify-center">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl" style={{
-                  backgroundColor: "var(--color-accent-soft)",
-                  color: "var(--color-accent)",
-                }}>
-                  <FiBookOpen className="h-6 w-6" />
-                </span>
+        <div className="border-t" style={{ borderColor: "var(--color-border)" }}>
+          {education.map((ed, idx) => (
+            <motion.div 
+              key={ed.id || ed.degree}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="grid gap-x-10 gap-y-3 py-8 md:grid-cols-[200px_1fr] border-b"
+              style={{ borderColor: "var(--color-border)" }}
+            >
+              <p className="text-sm md:pt-1" style={{ color: "var(--color-text-muted)" }}>
+                {ed.period}
+              </p>
+              <div>
+                <h3 className="text-xl font-medium leading-snug" style={{ color: "var(--color-text-heading)" }}>
+                  {ed.degree}
+                </h3>
+                <p className="mt-1" style={{ color: "var(--color-text-muted)" }}>
+                  {ed.institution}
+                </p>
               </div>
-
-              <div className="space-y-6">
-                {education.map((ed) => (
-                  <div key={ed.id || ed.degree}>
-                    <p className="text-lg font-semibold" style={{ color: "var(--color-text-heading)" }}>{ed.degree}</p>
-                    <p className="mt-1 text-sm" style={{ color: "var(--color-text-muted)" }}>{ed.institution}</p>
-                    <span className="tag mt-3 inline-block">{ed.period}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </SectionWrapper>
+    </section>
   );
 }

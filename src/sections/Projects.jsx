@@ -2,71 +2,88 @@ import { Link } from "react-router-dom";
 import SectionWrapper from "../components/SectionWrapper";
 import projects from "../data/projects";
 import { motion } from "framer-motion";
-
-const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } };
-const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] } } };
+import { FiGithub, FiExternalLink } from "react-icons/fi";
 
 export default function Projects() {
   return (
-    <SectionWrapper id="projects" className="py-20">
-      <div className="py-12 relative">
-        <div className="mx-auto max-w-5xl px-6">
-          {/* Header */}
-          <div className="mb-16 text-center">
-            <h2 className="section-title">Featured Work</h2>
-          </div>
+    <SectionWrapper id="projects" className="py-20" style={{ backgroundColor: "var(--color-bg-primary)" }}>
+      <div className="mx-auto max-w-5xl px-6">
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
+        >
+          <p className="mb-3 text-sm font-medium" style={{ color: "var(--color-text-muted)" }}>Projects</p>
+          <h2 className="text-4xl font-semibold tracking-tight" style={{ color: "var(--color-text-heading)" }}>
+            Things I've built.
+          </h2>
+        </motion.div>
 
-          {/* Cards */}
-          <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} className="space-y-8">
-            {projects.map((project) => (
-              <motion.div variants={itemVariants} key={project.id || project.title} className="card group relative flex flex-col overflow-hidden">
-
-                {/* Badges */}
-                <div className="absolute top-6 right-6 flex gap-2 z-10">
-                  {project.featured && <span className="badge shimmer-badge">Featured</span>}
-                  {project.status && (
-                    <span className="text-xs font-medium px-3 py-1" style={{
-                      backgroundColor: "rgba(48,209,88,0.12)",
-                      color: "#30d158",
-                      borderRadius: "var(--radius-pill)",
-                    }}>{project.status}</span>
-                  )}
-                </div>
-
-                <div className="flex flex-1 flex-col p-8 mt-2">
-                  <h3 className="mb-1 pr-28 text-2xl font-semibold" style={{ color: "var(--color-text-heading)", letterSpacing: "-0.02em" }}>{project.title}</h3>
-                  {project.tagline && <p className="mb-5 text-sm font-medium" style={{ color: "var(--color-accent)" }}>{project.tagline}</p>}
-                  <p className="mb-8 flex-1 text-base leading-relaxed max-w-2xl" style={{ color: "var(--color-text-body)" }}>{project.summary}</p>
-
-                  {/* Tech */}
-                  <div className="mb-8 flex flex-wrap gap-2">
-                    {project.tech.map((t) => <span key={t} className="tag">{t}</span>)}
-                  </div>
-
-                  {/* Links */}
-                  <div className="flex flex-wrap items-center gap-4 pt-6" style={{ borderTop: "1px solid var(--color-border)" }}>
-                    <Link to={`/project/${project.title.toLowerCase().replace(/\s+/g, '-')}`} className="btn-primary text-sm">
-                      Read More
-                    </Link>
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-outline text-sm group/link">
-                      Live Demo
-                      <svg className="h-4 w-4 ml-1 transition-transform duration-200 group-hover/link:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </a>
-                    {project.githubUrl && project.githubUrl !== "#" && (
-                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-outline text-sm group/link">
-                        Source
-                        <svg className="h-4 w-4 ml-1 transition-transform duration-200 group-hover/link:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, idx) => (
+            <motion.div 
+              key={project.id || project.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+            >
+              <Link
+                to={`/project/${project.title.toLowerCase().replace(/\s+/g, '-')}`}
+                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-6 transition-colors sm:p-8 no-underline block"
+                style={{
+                  backgroundColor: "var(--color-bg-surface-sunken)",
+                  borderColor: "var(--color-border)",
+                  color: "inherit"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--color-bg-surface-alt)"}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "var(--color-bg-surface-sunken)"}
+              >
+                <div>
+                  <div className="mb-5 flex items-center justify-between gap-4">
+                    {project.status && (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium" style={{ borderColor: "var(--color-border)", color: "var(--color-text-muted)" }}>
+                        <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: project.status === "Live" ? "#22c55e" : "var(--color-text-muted)" }} />
+                        {project.status}
+                      </span>
                     )}
+                    <div className="flex items-center gap-2 ml-auto">
+                      {project.githubUrl && project.githubUrl !== "#" && (
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          className="flex items-center justify-center h-8 w-8 rounded-full transition-colors"
+                          style={{ color: "var(--color-text-muted)", border: "1px solid var(--color-border)" }}
+                          title="Source Code"
+                        >
+                          <FiGithub className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      {project.liveUrl && project.liveUrl !== "#" && (
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          className="flex items-center justify-center h-8 w-8 rounded-full transition-colors"
+                          style={{ color: "var(--color-text-muted)", border: "1px solid var(--color-border)" }}
+                          title="Live Demo"
+                        >
+                          <FiExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                    </div>
                   </div>
+                  <h3 className="mb-2 text-lg font-medium tracking-tight" style={{ color: "var(--color-text-heading)" }}>
+                    {project.title}
+                  </h3>
+                  <p className="text-sm line-clamp-3 leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
+                    {project.summary}
+                  </p>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
     </SectionWrapper>
