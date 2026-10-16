@@ -40,8 +40,8 @@
 
   --color-bg-surface-sunken: rgba(241, 245, 249, 0.52);
 
-  --color-input-bg: rgba(255, 255, 255, 0.75);
-  --color-input-border: #cbd5e1;
+  --color-input-bg: rgba(255, 255, 255, 0.62);
+  --color-input-border: #94a3b8;
   --color-input-text: #0f172a;
 
   --color-footer-bg: rgba(255, 255, 255, 0.64);
@@ -107,8 +107,8 @@
 
   --color-bg-surface-sunken: rgba(24, 24, 27, 0.52);
 
-  --color-input-bg: rgba(9, 9, 11, 0.75);
-  --color-input-border: #3f3f46;
+  --color-input-bg: rgba(39, 39, 42, 0.62);
+  --color-input-border: #71717a;
   --color-input-text: #fafafa;
 
   --color-glass-bg: transparent;
@@ -537,6 +537,25 @@
 
 .footer-glass {
   border-radius: 0;
+}
+
+.contact-field {
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  border-radius: 10px;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
+  -webkit-backdrop-filter: blur(10px) saturate(115%);
+  backdrop-filter: blur(10px) saturate(115%);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.contact-field:hover {
+  border-color: color-mix(in srgb, var(--color-border-hover) 70%, transparent);
+}
+
+.contact-field:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 12%, transparent);
 }
 
 .nav-glass {

@@ -13,7 +13,7 @@ export const profile = {
   linkedin: "https://linkedin.com/in/ln-saikat",
   linkedinLabel: "linkedin.com/in/ln-saikat",
   github: "https://github.com/saikat-ghosh-in",
-  location: "Hyderabad, India",
+  location: "Bengaluru, India",
   availableForWork: true,
 };
 
