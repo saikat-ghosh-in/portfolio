@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const { mode } = useTheme();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const navigate = useNavigate();
@@ -15,7 +14,6 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
       if (location.pathname !== "/") return;
       const sections = navLinks.map((l) => l.href.replace("#", ""));
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -53,12 +51,9 @@ export default function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
       id="navbar"
-      className="fixed top-0 left-0 right-0 z-[10000] transition-[background-color,border-color] duration-300 border-b"
+      className="nav-glass fixed top-0 left-0 right-0 z-[10000]"
       style={{
-        backgroundColor: "var(--color-nav-bg)",
-        borderColor: scrolled ? "var(--color-nav-border)" : "transparent",
-        backdropFilter: "blur(18px)",
-        WebkitBackdropFilter: "blur(18px)",
+        backgroundColor: "transparent",
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
@@ -137,10 +132,9 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="overflow-hidden md:hidden border-t"
+            className="nav-dropdown relative overflow-hidden md:hidden"
             style={{
-              borderColor: "var(--color-border)",
-              backgroundColor: "var(--color-bg-card)",
+              backgroundColor: "transparent",
             }}
           >
             <div className="px-6 py-4 max-h-[calc(100svh-60px)] overflow-y-auto">
