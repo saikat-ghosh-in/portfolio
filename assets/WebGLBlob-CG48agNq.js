@@ -4161,7 +4161,7 @@ float snoise(vec3 v){
 // A single broad noise field keeps the silhouette fluid while avoiding the
 // extra octave that made the surface busy and expensive on mobile GPUs.
 float displacement(vec3 p, float t){
-  return snoise(vec3(p.x*1.15, p.y*1.15 + t*0.10, p.z*1.15 - t*0.075));
+  return snoise(vec3(p.x*1.15, p.y*1.15 + t*0.125, p.z*1.15 - t*0.095));
 }
 
 uniform float u_time;
@@ -4204,7 +4204,7 @@ void main(){
 
   // Sinusoidal horizontal + animated wave — cycles through all 4 colours
   // across the blob surface so every hue is clearly seen at some point
-  float th = 0.5 + 0.5 * sin(vPos.x * 1.6 + vPos.z * 0.9 + u_time * 0.16);
+  float th = 0.5 + 0.5 * sin(vPos.x * 1.6 + vPos.z * 0.9 + u_time * 0.20);
 
   vec3 topRow   = mix(u_colorA, u_colorC, th);   // A ↔ C along top
   vec3 botRow   = mix(u_colorB, u_colorD, th);   // B ↔ D along bottom
@@ -4238,4 +4238,4 @@ void main(){
 
   gl_FragColor = vec4(color, 1.0);
 }
-`;function Wv({isDark:e,onReady:t}){let n=(0,d.useRef)(),r=(0,d.useRef)(),i=(0,d.useRef)(!1),{viewport:a}=v_(),o=f(),s=(0,d.useRef)(0),c=(0,d.useRef)(0),l=(0,d.useMemo)(()=>({u_time:{value:0},u_colorA:{value:new J(e?`#0071e3`:`#5856d6`)},u_colorB:{value:new J(e?`#bf5af2`:`#ff2d55`)},u_colorC:{value:new J(e?`#30d158`:`#ff9500`)},u_colorD:{value:new J(`#5ac8fa`)}}),[e]);return y_(e=>{if(!n.current||!r.current)return;let l=e.clock.getElapsedTime(),u=!o,d=Math.max(document.documentElement.scrollHeight-window.innerHeight,1),f=u?On.clamp(window.scrollY/d,0,1):0;r.current.uniforms.u_time.value=u?l:0,i.current||(i.current=!0,t?.());let p=f-s.current;!u||Math.abs(p)>.12?c.current=0:c.current=On.lerp(c.current,p*120,.14),s.current=f;let m=Math.min(a.width,a.height)*.34,h=m,g;if(f>.95){let e=(f-.95)/.05;g=On.lerp(-a.height*.035,-a.height*.18,e),h=m*(1+e*.1)}else g=On.lerp(a.height*.035,-a.height*.035,f/.95);let _=u?Math.min(l/1.4,1):1,v=_===1?1:1-2**(-10*_);h*=.96+.04*v,n.current.scale.setScalar(h);let y=a.width*.1+(u?Math.sin(f*Math.PI*1.5)*a.width*.14:0);n.current.position.set(y,g,0);let b=u?(1-v)*.18:0;n.current.rotation.x=On.lerp(n.current.rotation.x,u?f*.4+b*.5:0,.04),n.current.rotation.y=On.lerp(n.current.rotation.y,u?l*.005+c.current*.12+b:0,.04),n.current.rotation.z=On.lerp(n.current.rotation.z,u?c.current*.07+b*.2:0,.05)}),(0,Cg.jsxs)(`mesh`,{ref:n,children:[(0,Cg.jsx)(`icosahedronGeometry`,{args:[1,128]}),(0,Cg.jsx)(`shaderMaterial`,{ref:r,vertexShader:Hv,fragmentShader:Uv,uniforms:l,side:2})]})}function Gv(){let{mode:e}=o(),t=e===`dark`,{setBlobReady:n}=s();return(0,Cg.jsx)(`div`,{className:`fixed inset-0 z-[0] pointer-events-none`,style:{mixBlendMode:t?`screen`:`multiply`,opacity:t?.85:.45},children:(0,Cg.jsx)(Vv,{camera:{position:[0,0,5],fov:45},dpr:[1,1.5],gl:{antialias:!0},children:(0,Cg.jsx)(Wv,{isDark:t,onReady:n})})})}export{Gv as default};
+`;function Wv({isDark:e,onReady:t}){let n=(0,d.useRef)(),r=(0,d.useRef)(),i=(0,d.useRef)(!1),{viewport:a}=v_(),o=f(),s=(0,d.useRef)(0),c=(0,d.useRef)(0),l=(0,d.useMemo)(()=>({u_time:{value:0},u_colorA:{value:new J(e?`#0071e3`:`#5856d6`)},u_colorB:{value:new J(e?`#bf5af2`:`#ff2d55`)},u_colorC:{value:new J(e?`#30d158`:`#ff9500`)},u_colorD:{value:new J(`#5ac8fa`)}}),[e]);return y_(e=>{if(!n.current||!r.current)return;let l=e.clock.getElapsedTime(),u=!o,d=Math.max(document.documentElement.scrollHeight-window.innerHeight,1),f=u?On.clamp(window.scrollY/d,0,1):0;r.current.uniforms.u_time.value=u?l:0,i.current||(i.current=!0,t?.());let p=f-s.current;!u||Math.abs(p)>.12?c.current=0:c.current=On.lerp(c.current,p*120,.14),s.current=f;let m=Math.min(a.width,a.height)*.38,h=m,g;if(f>.95){let e=(f-.95)/.05;g=On.lerp(-a.height*.035,-a.height*.18,e),h=m*(1+e*.1)}else g=On.lerp(a.height*.035,-a.height*.035,f/.95);let _=u?Math.min(l/1.4,1):1,v=_===1?1:1-2**(-10*_);h*=.96+.04*v,n.current.scale.setScalar(h);let y=a.width*.1+(u?Math.sin(f*Math.PI*1.5)*a.width*.14:0);n.current.position.set(y,g,0);let b=u?(1-v)*.18:0;n.current.rotation.x=On.lerp(n.current.rotation.x,u?f*.4+b*.5:0,.04),n.current.rotation.y=On.lerp(n.current.rotation.y,u?l*.006+c.current*.12+b:0,.04),n.current.rotation.z=On.lerp(n.current.rotation.z,u?c.current*.07+b*.2:0,.05)}),(0,Cg.jsxs)(`mesh`,{ref:n,children:[(0,Cg.jsx)(`icosahedronGeometry`,{args:[1,128]}),(0,Cg.jsx)(`shaderMaterial`,{ref:r,vertexShader:Hv,fragmentShader:Uv,uniforms:l,side:2})]})}function Gv(){let{mode:e}=o(),t=e===`dark`,{setBlobReady:n}=s();return(0,Cg.jsx)(`div`,{className:`fixed inset-0 z-[0] pointer-events-none`,style:{mixBlendMode:t?`screen`:`multiply`,opacity:t?.85:.45},children:(0,Cg.jsx)(Vv,{camera:{position:[0,0,5],fov:45},dpr:[1,1.5],gl:{antialias:!0},children:(0,Cg.jsx)(Wv,{isDark:t,onReady:n})})})}export{Gv as default};
