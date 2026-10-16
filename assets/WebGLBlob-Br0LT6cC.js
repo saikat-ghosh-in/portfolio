@@ -4169,13 +4169,23 @@ uniform float u_time;
 uniform vec2  u_mouse;     // NDC mouse position (-1 to +1)
 
 varying vec3  vPos;        // displaced object-space position
+varying vec3  vNorm;       // noise-perturbed normal
 varying vec3  vWorldPos;   // world-space position for lighting
 
 void main(){
   // ── 1. Base displacement ────────────────────────────────────────────────
   float d0 = displacement(position, u_time);
 
-  // ── 2. Cloud-puff mouse interaction using 3D direction ──────────────────
+  // ── 2. Finite-difference gradient → perturbed normal ───────────────────
+  // All sampling in 3D object-space — zero UV seam artefacts
+  float eps = 0.04;
+  float dx  = displacement(position + vec3(eps, 0.0, 0.0), u_time);
+  float dy  = displacement(position + vec3(0.0, eps, 0.0), u_time);
+  float dz  = displacement(position + vec3(0.0, 0.0, eps), u_time);
+  vec3  grad = vec3(dx-d0, dy-d0, dz-d0) / eps;
+  vNorm = normalize(normal - grad * 0.28);
+
+  // ── 3. Cloud-puff mouse interaction using 3D direction ──────────────────
   // Map mouse NDC to a direction on the unit sphere — seamless everywhere
   vec3  mouseDir = normalize(vec3(u_mouse.x * 1.1, u_mouse.y * 1.1, 1.6));
   float cosA     = dot(normalize(position), mouseDir);
@@ -4205,13 +4215,12 @@ uniform vec3  u_colorD;
 uniform float u_time;
 
 varying vec3  vPos;
+varying vec3  vNorm;
 varying vec3  vWorldPos;
 
 void main(){
   // ── Back-face correction ────────────────────────────────────────────────
-  // Derivatives of the displaced world position provide a geometric normal
-  // without the extra per-vertex noise samples used by finite differences.
-  vec3 N = normalize(cross(dFdx(vWorldPos), dFdy(vWorldPos)));
+  vec3 N = normalize(vNorm);
   bool isFront = gl_FrontFacing;
   if (!isFront) N = -N;
 
@@ -4257,4 +4266,4 @@ void main(){
 
   gl_FragColor = vec4(color, 1.0);
 }
-`;function fy({isDark:e,onReady:t}){let n=(0,T.useRef)(),r=(0,T.useRef)(),i=(0,T.useRef)(!1),{viewport:a}=B_(),o=re(),s=(0,T.useRef)(0),c=(0,T.useRef)(0),l=E(0),u=E(0),d=ne(l,{damping:30,stiffness:28}),f=ne(u,{damping:30,stiffness:28});(0,T.useEffect)(()=>{let e=(e,t)=>{l.set(e/window.innerWidth*2-1),u.set(-(t/window.innerHeight)*2+1)},t=t=>e(t.clientX,t.clientY),n=t=>{let n=t.touches[0];n&&e(n.clientX,n.clientY)},r=window.matchMedia(`(pointer: fine)`).matches,i=r?`mousemove`:`touchstart`,a=r?t:n;return window.addEventListener(i,a,{passive:!0}),()=>{window.removeEventListener(i,a)}},[l,u]);let p=(0,T.useMemo)(()=>({u_time:{value:0},u_mouse:{value:new z(0,0)},u_colorA:{value:new W(e?`#0071e3`:`#5856d6`)},u_colorB:{value:new W(e?`#bf5af2`:`#ff2d55`)},u_colorC:{value:new W(e?`#30d158`:`#ff9500`)},u_colorD:{value:new W(`#5ac8fa`)}}),[e]);return V_(e=>{if(!n.current||!r.current)return;let l=e.clock.getElapsedTime(),u=!o,p=Math.max(document.documentElement.scrollHeight-window.innerHeight,1),m=u?$n.clamp(window.scrollY/p,0,1):0;r.current.uniforms.u_time.value=u?l:0,r.current.uniforms.u_mouse.value.set(u?d.get():0,u?f.get():0),i.current||(i.current=!0,t?.());let h=m-s.current;!u||Math.abs(h)>.12?c.current=0:c.current=$n.lerp(c.current,h*120,.14),s.current=m;let g=Math.min(a.width,a.height)*.45,_=g,v;if(m>.95){let e=(m-.95)/.05;v=$n.lerp(-a.height*.05,-a.height*.3,e),_=g*(1+e*.18)}else v=$n.lerp(a.height*.06,-a.height*.06,m/.95);let y=u?Math.min(l/1.4,1):1,b=y===1?1:1-2**(-10*y);_*=.96+.04*b,n.current.scale.setScalar(_);let x=a.width*.15+(u?Math.sin(m*Math.PI*1.5)*a.width*.25:0);n.current.position.set(x,v,0);let S=u?(1-b)*.18:0;n.current.rotation.x=$n.lerp(n.current.rotation.x,u?m*.6+S*.5:0,.04),n.current.rotation.y=$n.lerp(n.current.rotation.y,u?l*.006+c.current*.2+S:0,.04),n.current.rotation.z=$n.lerp(n.current.rotation.z,u?c.current*.1+S*.2:0,.05)}),(0,Gg.jsxs)(`mesh`,{ref:n,children:[(0,Gg.jsx)(`icosahedronGeometry`,{args:[1,128]}),(0,Gg.jsx)(`shaderMaterial`,{ref:r,vertexShader:uy,fragmentShader:dy,uniforms:p,side:2})]})}function py(){let{mode:e}=o(),t=e===`dark`,{setBlobReady:n}=s();return(0,Gg.jsx)(`div`,{className:`fixed inset-0 z-[0] pointer-events-none`,style:{mixBlendMode:t?`screen`:`multiply`,opacity:t?.85:.45},children:(0,Gg.jsx)(ly,{camera:{position:[0,0,5],fov:45},dpr:[1,1.5],gl:{antialias:!0},children:(0,Gg.jsx)(fy,{isDark:t,onReady:n})})})}export{py as default};
+`;function fy({isDark:e,onReady:t}){let n=(0,T.useRef)(),r=(0,T.useRef)(),i=(0,T.useRef)(!1),{viewport:a}=B_(),o=re(),s=(0,T.useRef)(0),c=(0,T.useRef)(0),l=E(0),u=E(0),d=ne(l,{damping:30,stiffness:28}),f=ne(u,{damping:30,stiffness:28});(0,T.useEffect)(()=>{let e=e=>{let t=e.touches?e.touches[0].clientX:e.clientX,n=e.touches?e.touches[0].clientY:e.clientY;l.set(t/window.innerWidth*2-1),u.set(-(n/window.innerHeight)*2+1)};return window.addEventListener(`mousemove`,e,{passive:!0}),window.addEventListener(`touchmove`,e,{passive:!0}),()=>{window.removeEventListener(`mousemove`,e),window.removeEventListener(`touchmove`,e)}},[l,u]);let p=(0,T.useMemo)(()=>({u_time:{value:0},u_mouse:{value:new z(0,0)},u_colorA:{value:new W(e?`#0071e3`:`#5856d6`)},u_colorB:{value:new W(e?`#bf5af2`:`#ff2d55`)},u_colorC:{value:new W(e?`#30d158`:`#ff9500`)},u_colorD:{value:new W(`#5ac8fa`)}}),[e]);return V_(e=>{if(!n.current||!r.current)return;let l=e.clock.getElapsedTime(),u=!o,p=Math.max(document.documentElement.scrollHeight-window.innerHeight,1),m=u?$n.clamp(window.scrollY/p,0,1):0;r.current.uniforms.u_time.value=u?l:0,r.current.uniforms.u_mouse.value.set(u?d.get():0,u?f.get():0),i.current||(i.current=!0,t?.());let h=m-s.current;!u||Math.abs(h)>.12?c.current=0:c.current=$n.lerp(c.current,h*120,.14),s.current=m;let g=Math.min(a.width,a.height)*.45,_=g,v;if(m>.95){let e=(m-.95)/.05;v=$n.lerp(-a.height*.05,-a.height*.3,e),_=g*(1+e*.18)}else v=$n.lerp(a.height*.06,-a.height*.06,m/.95);let y=u?Math.min(l/1.4,1):1,b=y===1?1:1-2**(-10*y);_*=.96+.04*b,n.current.scale.setScalar(_);let x=a.width*.15+(u?Math.sin(m*Math.PI*1.5)*a.width*.25:0);n.current.position.set(x,v,0);let S=u?(1-b)*.18:0;n.current.rotation.x=$n.lerp(n.current.rotation.x,u?m*.6+S*.5:0,.04),n.current.rotation.y=$n.lerp(n.current.rotation.y,u?l*.006+c.current*.2+S:0,.04),n.current.rotation.z=$n.lerp(n.current.rotation.z,u?c.current*.1+S*.2:0,.05)}),(0,Gg.jsxs)(`mesh`,{ref:n,children:[(0,Gg.jsx)(`icosahedronGeometry`,{args:[1,128]}),(0,Gg.jsx)(`shaderMaterial`,{ref:r,vertexShader:uy,fragmentShader:dy,uniforms:p,side:2})]})}function py(){let{mode:e}=o(),t=e===`dark`,{setBlobReady:n}=s();return(0,Gg.jsx)(`div`,{className:`fixed inset-0 z-[0] pointer-events-none`,style:{mixBlendMode:t?`screen`:`multiply`,opacity:t?.85:.45},children:(0,Gg.jsx)(ly,{camera:{position:[0,0,5],fov:45},dpr:[1,1.5],gl:{antialias:!0},children:(0,Gg.jsx)(fy,{isDark:t,onReady:n})})})}export{py as default};
