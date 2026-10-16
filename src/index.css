@@ -8,14 +8,14 @@
 /* ─── Light Mode ─────────────────────────────────────────────── */
 :root {
   --color-bg-primary: #ffffff;
-  --color-bg-surface: rgba(248, 250, 252, 0.75);
-  --color-bg-surface-alt: rgba(241, 245, 249, 0.72);
+  --color-bg-surface: rgba(248, 250, 252, 0.58);
+  --color-bg-surface-alt: rgba(241, 245, 249, 0.66);
   --color-bg-card: rgba(255, 255, 255, 0.82);
 
   /* Raised contrast — #334155 (vs old #475569) and #4a5568 (vs old #64748b) */
   --color-text-heading: #0f172a;
   --color-text-body:    #334155;
-  --color-text-muted:   #4a5568;
+  --color-text-muted:   #475569;
   --color-text-on-accent: #ffffff;
 
   --color-accent: #0f172a;
@@ -27,8 +27,8 @@
   --color-border: #e2e8f0;
   --color-border-hover: #94a3b8;
 
-  --color-nav-bg: rgba(255, 255, 255, 0.75);
-  --color-nav-border: #e2e8f0;
+  --color-nav-bg: rgba(255, 255, 255, 0.62);
+  --color-nav-border: rgba(226, 232, 240, 0.62);
   --color-nav-shadow: none;
 
   --color-tag-bg: rgba(248, 250, 252, 0.8);
@@ -38,14 +38,14 @@
   --color-badge-bg: rgba(241, 245, 249, 0.85);
   --color-badge-text: #0f172a;
 
-  --color-bg-surface-sunken: rgba(241, 245, 249, 0.70);
+  --color-bg-surface-sunken: rgba(241, 245, 249, 0.52);
 
   --color-input-bg: rgba(255, 255, 255, 0.75);
   --color-input-border: #cbd5e1;
   --color-input-text: #0f172a;
 
   --color-footer-bg: rgba(255, 255, 255, 0.80);
-  --color-footer-text: #4a5568;
+  --color-footer-text: #475569;
   --color-footer-border: #e2e8f0;
 
   --radius-card: 24px;
@@ -65,20 +65,23 @@
   --color-glass-bg: transparent;
 
   /* Tinted backdrop used by alternating sections */
-  --color-section-tint: rgba(241, 245, 249, 0.60);
+  --color-section-tint: rgba(241, 245, 249, 0.30);
+  --color-success: #15803d;
+  --color-success-soft: rgba(21, 128, 61, 0.10);
+  --color-error: #b91c1c;
 }
 
 /* ─── Dark Mode ──────────────────────────────────────────────── */
 [data-theme="dark"] {
   --color-bg-primary: #09090b;
-  --color-bg-surface: rgba(24, 24, 27, 0.75);
-  --color-bg-surface-alt: rgba(39, 39, 42, 0.70);
-  --color-bg-card: rgba(9, 9, 11, 0.80);
+  --color-bg-surface: rgba(24, 24, 27, 0.58);
+  --color-bg-surface-alt: rgba(39, 39, 42, 0.66);
+  --color-bg-card: rgba(9, 9, 11, 0.82);
 
   /* Raised contrast — #d4d4d8 (vs old #a1a1aa) and #a1a1aa (vs old #71717a) */
   --color-text-heading: #fafafa;
   --color-text-body:    #d4d4d8;
-  --color-text-muted:   #a1a1aa;
+  --color-text-muted:   #b4b4bc;
   --color-text-on-accent: #09090b;
 
   --color-accent: #fafafa;
@@ -90,8 +93,8 @@
   --color-border: #3f3f46;
   --color-border-hover: #52525b;
 
-  --color-nav-bg: rgba(9, 9, 11, 0.82);
-  --color-nav-border: #3f3f46;
+  --color-nav-bg: rgba(9, 9, 11, 0.62);
+  --color-nav-border: rgba(63, 63, 70, 0.62);
   --color-nav-shadow: none;
 
   --color-tag-bg: rgba(24, 24, 27, 0.80);
@@ -101,7 +104,7 @@
   --color-badge-bg: rgba(39, 39, 42, 0.90);
   --color-badge-text: #fafafa;
 
-  --color-bg-surface-sunken: rgba(24, 24, 27, 0.72);
+  --color-bg-surface-sunken: rgba(24, 24, 27, 0.52);
 
   --color-input-bg: rgba(9, 9, 11, 0.75);
   --color-input-border: #3f3f46;
@@ -109,7 +112,7 @@
 
   --color-glass-bg: transparent;
   --color-footer-bg: rgba(9, 9, 11, 0.85);
-  --color-footer-text: #a1a1aa;
+  --color-footer-text: #b4b4bc;
   --color-footer-border: #3f3f46;
 
   --radius-card: 24px;
@@ -126,7 +129,10 @@
   --heading-weight: 600;
 
   /* Tinted backdrop used by alternating sections */
-  --color-section-tint: rgba(39, 39, 42, 0.55);
+  --color-section-tint: rgba(39, 39, 42, 0.38);
+  --color-success: #4ade80;
+  --color-success-soft: rgba(74, 222, 128, 0.14);
+  --color-error: #f87171;
 }
 
 :root {
@@ -150,10 +156,11 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: calc(5rem + env(safe-area-inset-top, 0px));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -184,10 +191,25 @@
     color: var(--color-accent);
     text-decoration: none;
     transition: color 160ms ease;
+    touch-action: manipulation;
   }
 
-  a:hover {
-    color: var(--color-accent-hover);
+  button,
+  [role="button"] {
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a:hover {
+      color: var(--color-accent-hover);
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 
   ::selection {
@@ -198,6 +220,21 @@
   ::placeholder {
     color: var(--color-text-muted);
     opacity: 0.7;
+  }
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
   }
 }
 
@@ -319,7 +356,7 @@
   font-weight: 400;
   color: var(--color-accent);
   background: transparent;
-  border: none;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-button);
   cursor: pointer;
   user-select: none;
@@ -461,15 +498,131 @@
 .glass-text {
   position: relative;
   border-radius: var(--radius-card);
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
+  background: radial-gradient(
+    ellipse at 50% 46%,
+    color-mix(in srgb, var(--color-bg-primary) 76%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-primary) 62%, transparent) 66%,
+    color-mix(in srgb, var(--color-bg-primary) 30%, transparent) 100%
+  );
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.glass-surface {
+  border-radius: var(--radius-card);
+  background: radial-gradient(
+    ellipse at 50% 46%,
+    color-mix(in srgb, var(--color-bg-primary) 76%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-primary) 62%, transparent) 66%,
+    color-mix(in srgb, var(--color-bg-primary) 30%, transparent) 100%
+  );
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.footer-glass {
+  border-radius: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    color-mix(in srgb, var(--color-bg-primary) 72%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-primary) 48%, transparent) 66%,
+    transparent 100%
+  );
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.project-card,
+.certification-card {
+  position: relative;
+  isolation: isolate;
+  background: radial-gradient(
+    ellipse at 50% 42%,
+    color-mix(in srgb, var(--color-bg-primary) 72%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-primary) 52%, transparent) 68%,
+    color-mix(in srgb, var(--color-bg-primary) 24%, transparent) 100%
+  );
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  transition: border-color 200ms ease;
+}
+
+.project-card::before,
+.certification-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at 50% 42%,
+    color-mix(in srgb, var(--color-bg-surface-alt) 78%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-surface-alt) 42%, transparent) 68%,
+    transparent 100%
+  );
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover,
+  .certification-card:hover {
+    border-color: color-mix(in srgb, var(--color-border-hover) 30%, transparent);
+  }
+
+  .project-card:hover::before,
+  .certification-card:hover::before {
+    opacity: 1;
+  }
+}
+
+.hero-panel {
+  border: 0;
+  background: radial-gradient(
+    ellipse at 50% 46%,
+    color-mix(in srgb, var(--color-bg-primary) 78%, transparent) 0%,
+    color-mix(in srgb, var(--color-bg-primary) 63%, transparent) 68%,
+    color-mix(in srgb, var(--color-bg-primary) 28%, transparent) 100%
+  );
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.hero-panel p {
+  text-align: inherit;
+}
+
+section[id]:not(#hero) {
+  scroll-margin-top: calc(5rem + env(safe-area-inset-top, 0px));
+  padding-block: clamp(3.5rem, 7vw, 5rem);
+}
+
+section[id]:not(#hero) h2 {
+  font-size: clamp(1.875rem, 4.5vw, 2.75rem);
+  line-height: 1.12;
+  text-wrap: pretty;
+}
+
+@media (max-width: 639px) {
+  .hero-panel {
+    border-radius: 20px;
+  }
+
+  .hero-panel .btn-primary,
+  .hero-panel .btn-outline {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  section[id]:not(#hero) {
+    padding-inline: 0;
+  }
 }
 
 /* Semi-transparent section backdrop — lets the blob show through */
 .section-tint {
-  background-color: var(--color-section-tint);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background-color: transparent;
 }
 
 /* ═══════════════════════════════════════════════════════════════

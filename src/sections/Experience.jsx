@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export default function Experience() {
   return (
     <section id="experience" className="py-20 section-tint">
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="glass-surface mx-auto max-w-5xl px-5 py-6 sm:px-8 sm:py-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

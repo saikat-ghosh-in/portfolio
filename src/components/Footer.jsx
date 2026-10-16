@@ -11,7 +11,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ backgroundColor: "var(--color-footer-bg)", borderTop: "1px solid var(--color-footer-border)" }} className="py-8 relative z-50">
+    <footer className="footer-glass relative z-50 py-8">
       <div className="mx-auto max-w-5xl px-6 flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
         <p className="text-xs" style={{ color: "var(--color-footer-text)" }}>
           © {year} {profile.name}. All rights reserved.

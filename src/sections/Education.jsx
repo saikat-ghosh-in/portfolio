@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 
 export default function Education() {
   return (
-    <section id="education" className="py-20" style={{ backgroundColor: "var(--color-bg-primary)" }}>
-      <div className="mx-auto max-w-5xl px-6">
+    <section id="education" className="py-20">
+      <div className="glass-surface mx-auto max-w-5xl px-5 py-6 sm:px-8 sm:py-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

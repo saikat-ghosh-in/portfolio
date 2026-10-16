@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function SectionWrapper({ id, className = "", children }) {
+export default function SectionWrapper({ id, className = "", style, children }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -29,6 +29,7 @@ export default function SectionWrapper({ id, className = "", children }) {
     <section
       id={id}
       ref={ref}
+      style={style}
       className={`transition-[opacity,transform] duration-350 ease-[var(--ease-out)] ${
         visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
       } ${className}`}

@@ -2,7 +2,7 @@ const experience = [
   {
     id: 1,
     company: "Capgemini Technology Solutions India Limited",
-    location: "Hyderabad, India",
+    location: "Bengaluru, India",
     roles: [
       {
         title: "Senior Consultant",
@@ -31,7 +31,7 @@ const experience = [
         summary: "Built backend automation and data systems for a retail client, focused on reducing manual workflows and ensuring high availability.",
         bullets: [
           "Developed Java/Spring Boot backend automation for a retail client, reducing manual data processing by 40% and improving report generation speed by 60%.",
-          "Wrote complex SQL queries, stored procedures, and views on SQL Server to support reporting and data validation needs for retail stakeholders.",
+          "Wrote complex SQL queries and stored procedures on SQL Server to support reporting and data validation needs for retail stakeholders.",
         ],
         tags: ["Java", "Spring Boot", "SQL Server", "Stored Procedures", "Reporting", "JPA/Hibernate"],
       }

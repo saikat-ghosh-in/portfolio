@@ -1,10 +1,10 @@
-import SectionWrapper from "../components/SectionWrapper";
 import { certifications } from "../data/siteData";
 import { motion } from "framer-motion";
+import { FiExternalLink } from "react-icons/fi";
 
 export default function Certifications() {
   return (
-    <section id="certifications" className="py-20 section-tint">
+    <section id="certifications" className="py-20">
       <div className="mx-auto max-w-5xl px-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -19,7 +19,7 @@ export default function Certifications() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {certifications.map((cert, idx) => (
             <motion.div 
               key={cert.id}
@@ -29,16 +29,19 @@ export default function Certifications() {
               transition={{ duration: 0.5, delay: idx * 0.1 }}
             >
               <div 
-                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-6 sm:p-8 transition-colors"
-                style={{
-                  backgroundColor: "var(--color-bg-surface-sunken)",
-                  borderColor: "var(--color-border)",
-                }}
+                className="certification-card group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl p-5 sm:p-6"
               >
                 <div>
-                  <h3 className="mb-2 text-lg font-medium tracking-tight" style={{ color: "var(--color-text-heading)" }}>
-                    {cert.title}
-                  </h3>
+                  <div className="mb-2 flex items-start justify-between gap-3">
+                    <h3 className={`text-lg font-medium tracking-tight ${cert.url ? "pr-2" : ""}`} style={{ color: "var(--color-text-heading)" }}>
+                      {cert.title}
+                    </h3>
+                    {cert.url && (
+                      <span aria-hidden="true" className="pointer-events-none flex h-8 w-8 shrink-0 items-center justify-center rounded-full border" style={{ borderColor: "color-mix(in srgb, var(--color-border) 55%, transparent)", color: "var(--color-text-muted)" }}>
+                        <FiExternalLink className="h-4 w-4" />
+                      </span>
+                    )}
+                  </div>
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm mb-4" style={{ color: "var(--color-text-muted)" }}>
                     <span>{cert.issuer}</span>
                     {cert.completedOn && <><span>·</span><span>{cert.completedOn}</span></>}
@@ -59,7 +62,7 @@ export default function Certifications() {
                   )}
                 </div>
                 {cert.url && (
-                  <a href={cert.url} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10">
+                  <a href={cert.url} target="_blank" rel="noopener noreferrer" aria-label={`View ${cert.title} certification`} className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-offset-4">
                     <span className="sr-only">View Certification</span>
                   </a>
                 )}

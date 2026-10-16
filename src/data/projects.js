@@ -29,7 +29,7 @@ const projects = [
     techBackend: ["Java 17", "Spring Boot", "Spring Security", "JPA/Hibernate", "PostgreSQL", "JWT Auth", "OCI & Nginx"],
     tech: ["Java", "Spring Boot", "React", "Redux", "PostgreSQL", "Tailwind"],
     liveUrl: "https://mercato-in.netlify.app",
-    githubUrl: "https://github.com/saikat-ghosh-in/mercato-backend",
+    githubUrl: "https://github.com/saikat-ghosh-in/mercato",
     featured: true,
     status: "Live",
   },

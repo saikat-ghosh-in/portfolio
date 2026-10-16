@@ -1,17 +1,14 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import projects from "../data/projects";
-import { useTheme } from "../context/ThemeContext";
 import { FiArrowLeft, FiExternalLink, FiGithub, FiCheckCircle } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 export default function ProjectDetail() {
   const { title } = useParams();
-  const { mode } = useTheme();
-  const isDark = mode === "dark";
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [title]);
 
   const project = projects.find((p) => p.title.toLowerCase().replace(/\s+/g, '-') === title);
@@ -38,12 +35,7 @@ export default function ProjectDetail() {
 
   return (
     <>
-      <motion.div 
-        className="min-h-screen pt-28 pb-0"
-        initial={{ clipPath: "circle(0% at 50% 50%)" }}
-        animate={{ clipPath: "circle(150% at 50% 50%)" }}
-        transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-      >
+      <div className="min-h-screen pt-28 pb-0">
 
         {/* HERO SECTION */}
         <section className="relative px-6 py-12 md:py-24 mx-auto max-w-7xl overflow-hidden">
@@ -59,8 +51,8 @@ export default function ProjectDetail() {
               {project.featured && <span className="badge px-4 py-1.5 text-xs tracking-wider uppercase select-none" style={{ borderRadius: "9999px" }}>Featured</span>}
               {project.status && (
                 <span className="inline-flex items-center justify-center leading-none text-xs font-bold tracking-wider uppercase px-4 py-1.5 select-none" style={{
-                  backgroundColor: isDark ? "rgba(34,197,94,0.15)" : "rgba(34,197,94,0.1)",
-                  color: isDark ? "#4ade80" : "#16a34a",
+                  backgroundColor: "var(--color-success-soft)",
+                  color: "var(--color-success)",
                   borderRadius: "9999px",
                 }}>{project.status}</span>
               )}
@@ -213,7 +205,7 @@ export default function ProjectDetail() {
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Frontend</h3>
                     <div className="flex flex-wrap gap-3">
                       {project.techFrontend.map(t => (
-                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
+                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-surface-sunken)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
                       ))}
                     </div>
                   </motion.div>
@@ -226,7 +218,7 @@ export default function ProjectDetail() {
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Backend & Infra</h3>
                     <div className="flex flex-wrap gap-3">
                       {project.techBackend.map(t => (
-                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
+                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-surface-sunken)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
                       ))}
                     </div>
                   </motion.div>
@@ -239,7 +231,7 @@ export default function ProjectDetail() {
               >
                 <div className="flex flex-wrap justify-center gap-3">
                   {project.tech.map(t => (
-                    <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
+                    <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-surface-sunken)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
                   ))}
                 </div>
               </motion.div>
@@ -247,7 +239,7 @@ export default function ProjectDetail() {
           </section>
         )}
 
-      </motion.div>
+      </div>
     </>
   );
 }

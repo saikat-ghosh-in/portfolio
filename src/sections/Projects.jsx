@@ -6,7 +6,7 @@ import { FiGithub, FiExternalLink } from "react-icons/fi";
 
 export default function Projects() {
   return (
-    <SectionWrapper id="projects" className="py-20" style={{ backgroundColor: "var(--color-bg-primary)" }}>
+    <SectionWrapper id="projects" className="py-20">
       <div className="mx-auto max-w-5xl px-6">
         {/* Header */}
         <motion.div 
@@ -34,14 +34,8 @@ export default function Projects() {
             >
               <Link
                 to={`/project/${project.title.toLowerCase().replace(/\s+/g, '-')}`}
-                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-6 transition-colors sm:p-8 no-underline block"
-                style={{
-                  backgroundColor: "var(--color-bg-surface-sunken)",
-                  borderColor: "var(--color-border)",
-                  color: "inherit"
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--color-bg-surface-alt)"}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "var(--color-bg-surface-sunken)"}
+                className="project-card group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl p-6 no-underline sm:p-8"
+                style={{ color: "inherit" }}
               >
                 <div>
                   <div className="mb-5 flex items-center justify-between gap-4">

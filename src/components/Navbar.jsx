@@ -55,8 +55,11 @@ export default function Navbar() {
       id="navbar"
       className="fixed top-0 left-0 right-0 z-[10000] transition-[background-color,border-color] duration-300 border-b"
       style={{
-        backgroundColor: "var(--color-bg-primary)",
-        borderColor: scrolled ? "var(--color-border)" : "transparent",
+        backgroundColor: "var(--color-nav-bg)",
+        borderColor: scrolled ? "var(--color-nav-border)" : "transparent",
+        backdropFilter: "blur(18px)",
+        WebkitBackdropFilter: "blur(18px)",
+        paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
       <div className="mx-auto flex h-14 md:h-16 max-w-6xl items-center justify-between px-6">
@@ -137,7 +140,7 @@ export default function Navbar() {
             className="overflow-hidden md:hidden border-t"
             style={{
               borderColor: "var(--color-border)",
-              backgroundColor: "var(--color-bg-primary)",
+              backgroundColor: "var(--color-bg-card)",
             }}
           >
             <div className="px-6 py-4 max-h-[calc(100svh-60px)] overflow-y-auto">

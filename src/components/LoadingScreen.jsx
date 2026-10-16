@@ -91,8 +91,8 @@ export default function LoadingScreen() {
           }}
         >
           <span
-            className="font-black text-4xl text-white select-none"
-            style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.04em" }}
+            className="font-black text-4xl select-none"
+            style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.04em", color: "var(--color-text-on-accent)" }}
           >
             SG
           </span>

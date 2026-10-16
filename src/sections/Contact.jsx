@@ -33,8 +33,8 @@ export default function Contact() {
   };
 
   return (
-    <SectionWrapper id="contact" className="py-20" style={{ backgroundColor: "var(--color-bg-primary)" }}>
-      <div className="mx-auto max-w-5xl px-6">
+    <SectionWrapper id="contact" className="py-20">
+      <div className="glass-surface mx-auto max-w-5xl px-5 py-6 sm:px-8 sm:py-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -129,8 +129,8 @@ export default function Contact() {
               <button type="submit" disabled={status === "submitting"} className="btn-primary w-full sm:w-auto h-12 px-8">
                 {status === "submitting" ? "Sending..." : "Shoot me an email"}
               </button>
-              {status === "success" && <p className="mt-3 text-sm font-medium" style={{ color: "#30d158" }}>Message sent successfully!</p>}
-              {status === "error" && <p className="mt-3 text-sm font-medium" style={{ color: "#ff453a" }}>Failed to send. Please try again.</p>}
+              {status === "success" && <p className="mt-3 text-sm font-medium" style={{ color: "var(--color-success)" }}>Message sent successfully!</p>}
+              {status === "error" && <p className="mt-3 text-sm font-medium" style={{ color: "var(--color-error)" }}>Failed to send. Please try again.</p>}
             </form>
           </motion.div>
         </div>
