@@ -8,9 +8,9 @@
 /* ─── Light Mode ─────────────────────────────────────────────── */
 :root {
   --color-bg-primary: #ffffff;
-  --color-bg-surface: rgba(248, 250, 252, 0.58);
-  --color-bg-surface-alt: rgba(241, 245, 249, 0.66);
-  --color-bg-card: rgba(255, 255, 255, 0.82);
+  --color-bg-surface: rgba(248, 250, 252, 0.45);
+  --color-bg-surface-alt: rgba(241, 245, 249, 0.52);
+  --color-bg-card: rgba(255, 255, 255, 0.68);
 
   /* Raised contrast — #334155 (vs old #475569) and #4a5568 (vs old #64748b) */
   --color-text-heading: #0f172a;
@@ -27,7 +27,7 @@
   --color-border: #e2e8f0;
   --color-border-hover: #94a3b8;
 
-  --color-nav-bg: rgba(255, 255, 255, 0.62);
+  --color-nav-bg: rgba(255, 255, 255, 0.48);
   --color-nav-border: rgba(226, 232, 240, 0.62);
   --color-nav-shadow: none;
 
@@ -44,7 +44,7 @@
   --color-input-border: #cbd5e1;
   --color-input-text: #0f172a;
 
-  --color-footer-bg: rgba(255, 255, 255, 0.80);
+  --color-footer-bg: rgba(255, 255, 255, 0.64);
   --color-footer-text: #475569;
   --color-footer-border: #e2e8f0;
 
@@ -63,6 +63,7 @@
   --heading-weight: 600;
 
   --color-glass-bg: transparent;
+  --color-glass-halo: rgba(37, 99, 235, 0.18);
 
   /* Tinted backdrop used by alternating sections */
   --color-section-tint: rgba(241, 245, 249, 0.30);
@@ -74,9 +75,9 @@
 /* ─── Dark Mode ──────────────────────────────────────────────── */
 [data-theme="dark"] {
   --color-bg-primary: #09090b;
-  --color-bg-surface: rgba(24, 24, 27, 0.58);
-  --color-bg-surface-alt: rgba(39, 39, 42, 0.66);
-  --color-bg-card: rgba(9, 9, 11, 0.82);
+  --color-bg-surface: rgba(24, 24, 27, 0.45);
+  --color-bg-surface-alt: rgba(39, 39, 42, 0.52);
+  --color-bg-card: rgba(9, 9, 11, 0.68);
 
   /* Raised contrast — #d4d4d8 (vs old #a1a1aa) and #a1a1aa (vs old #71717a) */
   --color-text-heading: #fafafa;
@@ -93,7 +94,7 @@
   --color-border: #3f3f46;
   --color-border-hover: #52525b;
 
-  --color-nav-bg: rgba(9, 9, 11, 0.62);
+  --color-nav-bg: rgba(9, 9, 11, 0.48);
   --color-nav-border: rgba(63, 63, 70, 0.62);
   --color-nav-shadow: none;
 
@@ -111,7 +112,8 @@
   --color-input-text: #fafafa;
 
   --color-glass-bg: transparent;
-  --color-footer-bg: rgba(9, 9, 11, 0.85);
+  --color-glass-halo: rgba(59, 130, 246, 0.20);
+  --color-footer-bg: rgba(9, 9, 11, 0.68);
   --color-footer-text: #b4b4bc;
   --color-footer-border: #3f3f46;
 
@@ -495,98 +497,112 @@
 }
 
 /* Targeted glass blur */
-.glass-text {
+.glass-text,
+.glass-surface,
+.hero-panel,
+.footer-glass {
   position: relative;
-  border-radius: var(--radius-card);
-  background: radial-gradient(
-    ellipse at 50% 46%,
-    color-mix(in srgb, var(--color-bg-primary) 76%, transparent) 0%,
-    color-mix(in srgb, var(--color-bg-primary) 62%, transparent) 66%,
-    color-mix(in srgb, var(--color-bg-primary) 30%, transparent) 100%
-  );
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
+  isolation: isolate;
+  background: transparent;
 }
 
+.glass-text > *,
+.glass-surface > *,
+.hero-panel > *,
+.footer-glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glass-text::before,
+.glass-surface::before,
+.hero-panel::before,
+.footer-glass::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--color-bg-primary) 62%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+  backdrop-filter: blur(24px) saturate(135%);
+  box-shadow: 0 18px 44px -20px var(--color-glass-halo), 0 0 42px -24px var(--color-glass-halo);
+  content: "";
+  pointer-events: none;
+}
+
+.glass-text,
 .glass-surface {
   border-radius: var(--radius-card);
-  background: radial-gradient(
-    ellipse at 50% 46%,
-    color-mix(in srgb, var(--color-bg-primary) 76%, transparent) 0%,
-    color-mix(in srgb, var(--color-bg-primary) 62%, transparent) 66%,
-    color-mix(in srgb, var(--color-bg-primary) 30%, transparent) 100%
-  );
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
 }
 
 .footer-glass {
   border-radius: 0;
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    color-mix(in srgb, var(--color-bg-primary) 72%, transparent) 0%,
-    color-mix(in srgb, var(--color-bg-primary) 48%, transparent) 66%,
-    transparent 100%
-  );
-  -webkit-backdrop-filter: blur(18px);
-  backdrop-filter: blur(18px);
+}
+
+.nav-glass {
+  isolation: isolate;
+  background: transparent !important;
+}
+
+.nav-glass::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--color-nav-bg);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+  backdrop-filter: blur(24px) saturate(135%);
+  box-shadow: 0 18px 44px -28px var(--color-glass-halo);
+  content: "";
+  pointer-events: none;
+}
+
+.nav-glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-dropdown {
+  isolation: isolate;
+  background: transparent !important;
+}
+
+.nav-dropdown::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--color-bg-card);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+  backdrop-filter: blur(24px) saturate(135%);
+  box-shadow: 0 18px 44px -18px var(--color-glass-halo), 0 0 40px -22px var(--color-glass-halo);
+  content: "";
+  pointer-events: none;
+}
+
+.nav-dropdown > * {
+  position: relative;
+  z-index: 1;
 }
 
 .project-card,
 .certification-card {
   position: relative;
   isolation: isolate;
-  background: radial-gradient(
-    ellipse at 50% 42%,
-    color-mix(in srgb, var(--color-bg-primary) 72%, transparent) 0%,
-    color-mix(in srgb, var(--color-bg-primary) 52%, transparent) 68%,
-    color-mix(in srgb, var(--color-bg-primary) 24%, transparent) 100%
-  );
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  transition: border-color 200ms ease;
-}
-
-.project-card::before,
-.certification-card::before {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(
-    ellipse at 50% 42%,
-    color-mix(in srgb, var(--color-bg-surface-alt) 78%, transparent) 0%,
-    color-mix(in srgb, var(--color-bg-surface-alt) 42%, transparent) 68%,
-    transparent 100%
-  );
-  content: "";
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 200ms ease;
+  background: var(--color-bg-surface-alt);
+  -webkit-backdrop-filter: blur(24px) saturate(135%);
+  backdrop-filter: blur(24px) saturate(135%);
+  box-shadow: 0 18px 44px -20px var(--color-glass-halo), 0 0 42px -24px var(--color-glass-halo);
+  transition: box-shadow 200ms ease, background-color 200ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .project-card:hover,
   .certification-card:hover {
-    border-color: color-mix(in srgb, var(--color-border-hover) 30%, transparent);
-  }
-
-  .project-card:hover::before,
-  .certification-card:hover::before {
-    opacity: 1;
+    box-shadow: 0 22px 52px -18px var(--color-glass-halo), 0 0 48px -20px var(--color-glass-halo);
   }
 }
 
 .hero-panel {
   border: 0;
-  background: radial-gradient(
-    ellipse at 50% 46%,
-    color-mix(in srgb, var(--color-bg-primary) 78%, transparent) 0%,
-    color-mix(in srgb, var(--color-bg-primary) 63%, transparent) 68%,
-    color-mix(in srgb, var(--color-bg-primary) 28%, transparent) 100%
-  );
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
 }
 
 .hero-panel p {
