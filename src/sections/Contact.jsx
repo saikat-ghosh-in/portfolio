@@ -107,23 +107,20 @@ export default function Contact() {
                 <div>
                   <label htmlFor="name" className="mb-2 block text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Name</label>
                   <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
-                    className="w-full border-b py-2 text-sm outline-none bg-transparent transition-colors"
-                    style={{ borderColor: "var(--color-border)", color: "var(--color-text-heading)" }}
+                    className="contact-field h-11 w-full px-3.5 text-sm outline-none"
                   />
                 </div>
                 <div>
                   <label htmlFor="email" className="mb-2 block text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Email</label>
                   <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
-                    className="w-full border-b py-2 text-sm outline-none bg-transparent transition-colors"
-                    style={{ borderColor: "var(--color-border)", color: "var(--color-text-heading)" }}
+                    className="contact-field h-11 w-full px-3.5 text-sm outline-none"
                   />
                 </div>
               </div>
               <div>
                 <label htmlFor="message" className="mb-2 block text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Message</label>
                 <textarea id="message" name="message" value={formData.message} onChange={handleChange} required
-                  className="w-full resize-none border-b py-2 h-24 text-sm outline-none bg-transparent transition-colors"
-                  style={{ borderColor: "var(--color-border)", color: "var(--color-text-heading)" }}
+                  className="contact-field h-28 w-full resize-none px-3.5 py-3 text-sm outline-none"
                 />
               </div>
               <button type="submit" disabled={status === "submitting"} className="btn-primary w-full sm:w-auto h-12 px-8">

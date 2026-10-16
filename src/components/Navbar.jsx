@@ -57,23 +57,23 @@ export default function Navbar() {
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
     >
-      <div className="mx-auto flex h-14 md:h-16 max-w-6xl items-center justify-between px-6">
+      <div className="mx-auto flex h-14 md:h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         {/* Left — Logo and Name */}
         <a
           href="#hero"
           onClick={(e) => handleLinkClick(e, "#hero")}
-          className="flex items-center gap-2.5 text-base font-medium transition-colors no-underline"
+          className="flex shrink-0 items-center gap-2.5 text-base font-medium transition-colors no-underline"
           style={{ color: "var(--color-text-heading)" }}
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium" style={{ backgroundColor: "var(--color-text-heading)", color: "var(--color-bg-primary)" }}>
             SG
           </span>
-          <span className="hidden sm:inline tracking-tight">{profile.name}</span>
+          <span className="hidden whitespace-nowrap tracking-tight xl:inline">{profile.name}</span>
         </a>
 
         {/* Desktop Links + Toggle + CTA */}
-        <div className="hidden items-center gap-8 md:flex">
-          <ul className="flex items-center gap-6">
+        <div className="hidden items-center gap-4 xl:flex 2xl:gap-8">
+          <ul className="flex items-center gap-3 2xl:gap-6">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace("#", "");
               return (
@@ -81,7 +81,7 @@ export default function Navbar() {
                   <a
                     href={link.href}
                     onClick={(e) => handleLinkClick(e, link.href)}
-                    className="text-sm font-medium transition-colors duration-200 no-underline"
+                    className="whitespace-nowrap text-xs font-medium transition-colors duration-200 no-underline 2xl:text-sm"
                     style={{ color: isActive ? "var(--color-text-heading)" : "var(--color-text-muted)" }}
                   >
                     {link.label}
@@ -95,7 +95,7 @@ export default function Navbar() {
             <a
               href="#contact"
               onClick={(e) => handleLinkClick(e, "#contact")}
-              className="inline-flex shrink-0 items-center justify-center rounded-full text-sm font-medium transition-colors h-9 px-4"
+              className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-full text-xs font-medium transition-colors h-9 px-3 2xl:px-4 2xl:text-sm"
               style={{ backgroundColor: "var(--color-text-heading)", color: "var(--color-bg-primary)" }}
             >
               Get in touch
@@ -103,9 +103,17 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile: Toggle + Hamburger */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Mobile: CTA, Toggle + Hamburger */}
+        <div className="flex items-center gap-1.5 sm:gap-2 xl:hidden">
           <ThemeToggle />
+          <a
+            href="#contact"
+            onClick={(e) => handleLinkClick(e, "#contact")}
+            className="inline-flex h-9 shrink-0 items-center justify-center whitespace-nowrap rounded-full px-2.5 text-[11px] font-medium transition-colors sm:px-3 sm:text-xs"
+            style={{ backgroundColor: "var(--color-text-heading)", color: "var(--color-bg-primary)" }}
+          >
+            Get in touch
+          </a>
           <button
             id="mobile-menu-toggle"
             onClick={() => setMobileOpen((v) => !v)}
@@ -132,7 +140,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="nav-dropdown relative overflow-hidden md:hidden"
+            className="nav-dropdown relative overflow-hidden xl:hidden"
             style={{
               backgroundColor: "transparent",
             }}

@@ -1,6 +1,6 @@
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useSpring, useMotionValue, useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import { useLoading } from "../context/LoadingContext";
 import * as THREE from "three";
@@ -52,55 +52,29 @@ float snoise(vec3 v){
   return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
 }
 
-// Two-octave displacement evaluated at point p at time t
+// A single broad noise field keeps the silhouette fluid while avoiding the
+// extra octave that made the surface busy and expensive on mobile GPUs.
 float displacement(vec3 p, float t){
-  float n1 = snoise(vec3(p.x*1.3, p.y*1.3 + t*0.14, p.z*1.3 - t*0.10));
-  float n2 = snoise(vec3(p.x*2.6+0.5, p.y*2.6 - t*0.20, p.z*2.6 + t*0.16)) * 0.30;
-  return n1 + n2;
+  return snoise(vec3(p.x*1.15, p.y*1.15 + t*0.125, p.z*1.15 - t*0.095));
 }
 `;
 
 // ─── Vertex Shader ─────────────────────────────────────────────────────────
 // Uses 3D position (not UV) for EVERYTHING — avoids all UV seam artefacts.
-// Forward-difference gradient → perturbed normals for real front-face 3D shading.
+// Use screen-space derivatives for the displaced surface normal, avoiding
+// repeated noise samples at neighboring vertices.
 const vertexShader = SNOISE + /* glsl */`
 uniform float u_time;
-uniform vec2  u_mouse;     // NDC mouse position (-1 to +1)
 
 varying vec3  vPos;        // displaced object-space position
-varying vec3  vNorm;       // noise-perturbed normal
 varying vec3  vWorldPos;   // world-space position for lighting
 
 void main(){
   // ── 1. Base displacement ────────────────────────────────────────────────
   float d0 = displacement(position, u_time);
 
-  // ── 2. Finite-difference gradient → perturbed normal ───────────────────
-  // All sampling in 3D object-space — zero UV seam artefacts
-  float eps = 0.04;
-  float dx  = displacement(position + vec3(eps, 0.0, 0.0), u_time);
-  float dy  = displacement(position + vec3(0.0, eps, 0.0), u_time);
-  float dz  = displacement(position + vec3(0.0, 0.0, eps), u_time);
-  vec3  grad = vec3(dx-d0, dy-d0, dz-d0) / eps;
-  vNorm = normalize(normal - grad * 0.28);
-
-  // ── 3. Cloud-puff mouse interaction using 3D direction ──────────────────
-  // Map mouse NDC to a direction on the unit sphere — seamless everywhere
-  vec3  mouseDir = normalize(vec3(u_mouse.x * 1.1, u_mouse.y * 1.1, 1.6));
-  float cosA     = dot(normalize(position), mouseDir);
-  float mdist    = 1.0 - max(cosA, 0.0);   // 0 = facing mouse, 1 = away
-
-  float puff  = exp(-mdist * mdist * 5.0)  * 0.62;
-  float ring  = smoothstep(0.55, 0.40, mdist) * smoothstep(0.22, 0.40, mdist) * 0.20;
-  // Swirl uses 3D position + time — no seam
-  float swirl = snoise(position * 2.5 + vec3(u_mouse.x, u_mouse.y, 0.0) * 0.9
-                       + vec3(0.0, 0.0, u_time * 0.22))
-                * 0.14 * exp(-mdist * mdist * 7.0);
-
-  float mInfluence = puff + ring + swirl;
-
-  // ── 4. Apply displacement (conservative amplitude to avoid deep concavities)
-  vec3 displaced = position + normal * (d0 * 0.22 + mInfluence);
+  // ── 2. Apply restrained displacement for a smooth, rounded silhouette ───
+  vec3 displaced = position + normal * (d0 * 0.17);
   vPos     = displaced;
   vWorldPos = (modelMatrix * vec4(displaced, 1.0)).xyz;
 
@@ -120,12 +94,11 @@ uniform vec3  u_colorD;
 uniform float u_time;
 
 varying vec3  vPos;
-varying vec3  vNorm;
 varying vec3  vWorldPos;
 
 void main(){
   // ── Back-face correction ────────────────────────────────────────────────
-  vec3 N = normalize(vNorm);
+  vec3 N = normalize(cross(dFdx(vWorldPos), dFdy(vWorldPos)));
   bool isFront = gl_FrontFacing;
   if (!isFront) N = -N;
 
@@ -137,7 +110,7 @@ void main(){
 
   // Sinusoidal horizontal + animated wave — cycles through all 4 colours
   // across the blob surface so every hue is clearly seen at some point
-  float th = 0.5 + 0.5 * sin(vPos.x * 1.6 + vPos.z * 0.9 + u_time * 0.28);
+  float th = 0.5 + 0.5 * sin(vPos.x * 1.6 + vPos.z * 0.9 + u_time * 0.20);
 
   vec3 topRow   = mix(u_colorA, u_colorC, th);   // A ↔ C along top
   vec3 botRow   = mix(u_colorB, u_colorD, th);   // B ↔ D along bottom
@@ -148,21 +121,21 @@ void main(){
   float diff  = max(0.0, dot(N, Lkey));
 
   vec3  H    = normalize(Lkey + V);
-  float spec = pow(max(0.0, dot(N, H)), 30.0);
+  float spec = pow(max(0.0, dot(N, H)), 38.0);
 
   float fill = max(0.0, dot(N, normalize(vec3(-0.7, -0.5, 0.8)))) * 0.20;
 
-  float rim  = pow(clamp(1.0 - dot(N, V), 0.0, 1.0), 2.0);
+  float rim  = pow(clamp(1.0 - dot(N, V), 0.0, 1.0), 2.8);
 
   // ── Compose ─────────────────────────────────────────────────────────────
   vec3 ambient   = baseColor * 0.40;
   vec3 diffuse   = baseColor * (diff + fill) * 0.68;
 
   // Specular: tinted blend of C and A — highlights bump topology in colour
-  vec3 specularC = mix(u_colorC, u_colorA, 0.40) * spec * 0.48;
+  vec3 specularC = mix(u_colorC, u_colorA, 0.40) * spec * 0.58;
 
   // Rim: blend of colorA + colorD so two hues share the edge — not one dominant
-  vec3 rimColor  = mix(u_colorA, u_colorD, 0.55) * 1.35 * rim;
+  vec3 rimColor  = mix(u_colorA, u_colorD, 0.55) * 1.45 * rim;
 
   vec3 color = ambient + diffuse + specularC + rimColor;
 
@@ -183,55 +156,44 @@ function BlobMesh({ isDark, onReady }) {
   const { viewport }        = useThree();
   const prefersReducedMotion = useReducedMotion();
 
+  const scrollProgress = useRef(null);
   const prevScroll     = useRef(0);
   const scrollVelocity = useRef(0);
-
-  // Floaty spring physics
-  const mouseX       = useMotionValue(0);
-  const mouseY       = useMotionValue(0);
-  const smoothMouseX = useSpring(mouseX, { damping: 30, stiffness: 28 });
-  const smoothMouseY = useSpring(mouseY, { damping: 30, stiffness: 28 });
-
-  useEffect(() => {
-    const onMove = (e) => {
-      const cx = e.touches ? e.touches[0].clientX : e.clientX;
-      const cy = e.touches ? e.touches[0].clientY : e.clientY;
-      mouseX.set((cx / window.innerWidth)  *  2 - 1);
-      mouseY.set(-(cy / window.innerHeight) * 2 + 1);
-    };
-    window.addEventListener("mousemove", onMove, { passive: true });
-    window.addEventListener("touchmove", onMove, { passive: true });
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("touchmove", onMove);
-    };
-  }, [mouseX, mouseY]);
 
   // Light mode (multiply blend) — vibrant Apple palette
   // Dark mode (screen blend) — luminous neon Apple colors
   const uniforms = useMemo(() => ({
     u_time:   { value: 0.0 },
-    u_mouse:  { value: new THREE.Vector2(0, 0) },
     u_colorA: { value: new THREE.Color(isDark ? "#0071e3" : "#5856d6") },
     u_colorB: { value: new THREE.Color(isDark ? "#bf5af2" : "#ff2d55") },
     u_colorC: { value: new THREE.Color(isDark ? "#30d158" : "#ff9500") },
     u_colorD: { value: new THREE.Color(isDark ? "#5ac8fa" : "#5ac8fa") },
   }), [isDark]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (!meshRef.current || !materialRef.current) return;
 
     const time = state.clock.getElapsedTime();
     const motionEnabled = !prefersReducedMotion;
     const scrollRange = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
-    const scroll = motionEnabled ? THREE.MathUtils.clamp(window.scrollY / scrollRange, 0, 1) : 0;
+    const targetScroll = motionEnabled ? THREE.MathUtils.clamp(window.scrollY / scrollRange, 0, 1) : 0;
+    // Mobile browser chrome changes the visual viewport while scrolling. Ease
+    // the page-driven parallax so those small viewport/scroll jumps never
+    // snap the blob when the user reverses scroll direction.
+    if (scrollProgress.current === null) {
+      scrollProgress.current = targetScroll;
+      prevScroll.current = targetScroll;
+    } else {
+      scrollProgress.current = THREE.MathUtils.damp(
+        scrollProgress.current,
+        targetScroll,
+        4.5,
+        Math.min(delta, 0.05)
+      );
+    }
+    const scroll = scrollProgress.current;
 
     materialRef.current.uniforms.u_time.value = motionEnabled ? time : 0;
-    materialRef.current.uniforms.u_mouse.value.set(
-      motionEnabled ? smoothMouseX.get() : 0,
-      motionEnabled ? smoothMouseY.get() : 0
-    );
-
     // Signal ready after first successful frame
     if (!hasSignaled.current) {
       hasSignaled.current = true;
@@ -239,28 +201,30 @@ function BlobMesh({ isDark, onReady }) {
     }
 
     // Scroll velocity → reactive Z lean
-    const delta = scroll - prevScroll.current;
-    if (!motionEnabled || Math.abs(delta) > 0.12) {
-      scrollVelocity.current = 0;
-    } else {
-      scrollVelocity.current = THREE.MathUtils.lerp(
-        scrollVelocity.current, delta * 120, 0.14
-      );
-    }
+    const scrollDelta = scroll - prevScroll.current;
+    const targetVelocity = motionEnabled && delta > 0
+      ? THREE.MathUtils.clamp((scrollDelta / delta) * 0.08, -1, 1)
+      : 0;
+    scrollVelocity.current = THREE.MathUtils.damp(
+      scrollVelocity.current,
+      targetVelocity,
+      6,
+      Math.min(delta, 0.05)
+    );
     prevScroll.current = scroll;
 
     // Scale
-    const baseScale = Math.min(viewport.width, viewport.height) * 0.45;
+    const baseScale = Math.min(viewport.width, viewport.height) * 0.38;
     let scale = baseScale;
 
     // Y parallax — reduced range so blob drifts less on its own
     let yOffset;
     if (scroll > 0.95) {
       const excess = (scroll - 0.95) / 0.05;
-      yOffset = THREE.MathUtils.lerp(-viewport.height * 0.05, -viewport.height * 0.3, excess);
-      scale   = baseScale * (1 + excess * 0.18);
+      yOffset = THREE.MathUtils.lerp(-viewport.height * 0.035, -viewport.height * 0.18, excess);
+      scale   = baseScale * (1 + excess * 0.10);
     } else {
-      yOffset = THREE.MathUtils.lerp(viewport.height * 0.06, -viewport.height * 0.06, scroll / 0.95);
+      yOffset = THREE.MathUtils.lerp(viewport.height * 0.035, -viewport.height * 0.035, scroll / 0.95);
     }
 
     // Entrance animation: smooth growth and initial spin
@@ -271,27 +235,27 @@ function BlobMesh({ isDark, onReady }) {
     meshRef.current.scale.setScalar(scale);
 
     // X drift — sinusoidal across sections. Start slightly right.
-    const xBaseOffset = viewport.width * 0.15;
-    const xDrift = xBaseOffset + (motionEnabled ? Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.25 : 0);
+    const xBaseOffset = viewport.width * 0.10;
+    const xDrift = xBaseOffset + (motionEnabled ? Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.14 : 0);
     meshRef.current.position.set(xDrift, yOffset, 0);
 
     // Initial spin that slows down as it reaches full size
     const initialSpin = motionEnabled ? (1 - easeOutExpo) * 0.18 : 0;
 
-    // Rotation — purely idle + scroll driven; mouse only deforms surface via shader
+    // Rotation follows only the blob's idle motion and page scroll.
     meshRef.current.rotation.x = THREE.MathUtils.lerp(
       meshRef.current.rotation.x,
-      motionEnabled ? scroll * 0.6 + initialSpin * 0.5 : 0,
+      motionEnabled ? scroll * 0.4 + initialSpin * 0.5 : 0,
       0.04
     );
     meshRef.current.rotation.y = THREE.MathUtils.lerp(
       meshRef.current.rotation.y,
-      motionEnabled ? time * 0.006 + scrollVelocity.current * 0.2 + initialSpin : 0,
+      motionEnabled ? time * 0.006 + scrollVelocity.current * 0.12 + initialSpin : 0,
       0.04
     );
     meshRef.current.rotation.z = THREE.MathUtils.lerp(
       meshRef.current.rotation.z,
-      motionEnabled ? scrollVelocity.current * 0.1 + initialSpin * 0.2 : 0,
+      motionEnabled ? scrollVelocity.current * 0.07 + initialSpin * 0.2 : 0,
       0.05
     );
   });
