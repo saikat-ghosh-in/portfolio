@@ -4,7 +4,6 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { LoadingProvider } from "./context/LoadingContext";
 import Navbar from "./components/Navbar";
 import Hero from "./sections/Hero";
-import LoadingScreen from "./components/LoadingScreen";
 
 // Lazy load heavy sections and components
 const WebGLBlob = lazy(() => import("./components/WebGLBlob"));
@@ -39,10 +38,7 @@ export default function App() {
     <ThemeProvider>
       <LoadingProvider>
         <div className="min-h-screen font-sans antialiased relative" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-body)" }}>
-          {/* Loading screen — renders on top of everything until assets are ready */}
-          <LoadingScreen />
-
-          {/* Blob loads in background; signals LoadingContext when first frame is drawn */}
+          {/* Blob loads in background — no loading screen */}
           <Suspense fallback={null}>
             <WebGLBlob />
           </Suspense>
@@ -67,4 +63,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-

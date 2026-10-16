@@ -1,6 +1,6 @@
-import { useRef, useMemo, useEffect, useCallback } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useScroll, useSpring, useMotionValue } from "framer-motion";
+import { useSpring, useMotionValue, useReducedMotion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import { useLoading } from "../context/LoadingContext";
 import * as THREE from "three";
@@ -54,8 +54,8 @@ float snoise(vec3 v){
 
 // Two-octave displacement evaluated at point p at time t
 float displacement(vec3 p, float t){
-  float n1 = snoise(vec3(p.x*1.3, p.y*1.3 + t*0.32, p.z*1.3 - t*0.22));
-  float n2 = snoise(vec3(p.x*2.6+0.5, p.y*2.6 - t*0.50, p.z*2.6 + t*0.38)) * 0.30;
+  float n1 = snoise(vec3(p.x*1.3, p.y*1.3 + t*0.14, p.z*1.3 - t*0.10));
+  float n2 = snoise(vec3(p.x*2.6+0.5, p.y*2.6 - t*0.20, p.z*2.6 + t*0.16)) * 0.30;
   return n1 + n2;
 }
 `;
@@ -90,12 +90,12 @@ void main(){
   float cosA     = dot(normalize(position), mouseDir);
   float mdist    = 1.0 - max(cosA, 0.0);   // 0 = facing mouse, 1 = away
 
-  float puff  = exp(-mdist * mdist * 6.0)  * 0.32;
-  float ring  = smoothstep(0.55, 0.40, mdist) * smoothstep(0.22, 0.40, mdist) * 0.09;
+  float puff  = exp(-mdist * mdist * 5.0)  * 0.62;
+  float ring  = smoothstep(0.55, 0.40, mdist) * smoothstep(0.22, 0.40, mdist) * 0.20;
   // Swirl uses 3D position + time — no seam
   float swirl = snoise(position * 2.5 + vec3(u_mouse.x, u_mouse.y, 0.0) * 0.9
-                       + vec3(0.0, 0.0, u_time * 0.55))
-                * 0.06 * exp(-mdist * mdist * 9.0);
+                       + vec3(0.0, 0.0, u_time * 0.22))
+                * 0.14 * exp(-mdist * mdist * 7.0);
 
   float mInfluence = puff + ring + swirl;
 
@@ -181,7 +181,7 @@ function BlobMesh({ isDark, onReady }) {
   const hasSignaled = useRef(false);
 
   const { viewport }        = useThree();
-  const { scrollYProgress } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
 
   const prevScroll     = useRef(0);
   const scrollVelocity = useRef(0);
@@ -207,39 +207,29 @@ function BlobMesh({ isDark, onReady }) {
     };
   }, [mouseX, mouseY]);
 
-  // ── Colour palettes ──────────────────────────────────────────────────────
-  //
-  // Light mode (multiply blend) — use vivid, fully saturated hues so that
-  // even at 0.60 opacity through multiply they look POPPY, not greyed-out.
-  //   A — bright violet   #a855f7   (Tailwind purple-500)
-  //   B — hot rose        #f43f5e   (Tailwind rose-500)
-  //   C — vivid orange    #fb923c   (Tailwind orange-400)
-  //   D — electric cyan   #22d3ee   (Tailwind cyan-400)
-  //
-  // Dark mode (screen blend) — luminous neons
-  //   A — electric indigo #4338ca
-  //   B — vivid violet    #7c3aed
-  //   C — neon cyan       #0891b2
-  //   D — soft lavender   #a78bfa
+  // Light mode (multiply blend) — vibrant Apple palette
+  // Dark mode (screen blend) — luminous neon Apple colors
   const uniforms = useMemo(() => ({
     u_time:   { value: 0.0 },
     u_mouse:  { value: new THREE.Vector2(0, 0) },
-    u_colorA: { value: new THREE.Color(isDark ? "#4338ca" : "#a855f7") },
-    u_colorB: { value: new THREE.Color(isDark ? "#7c3aed" : "#f43f5e") },
-    u_colorC: { value: new THREE.Color(isDark ? "#0891b2" : "#fb923c") },
-    u_colorD: { value: new THREE.Color(isDark ? "#a78bfa" : "#22d3ee") },
+    u_colorA: { value: new THREE.Color(isDark ? "#0071e3" : "#5856d6") },
+    u_colorB: { value: new THREE.Color(isDark ? "#bf5af2" : "#ff2d55") },
+    u_colorC: { value: new THREE.Color(isDark ? "#30d158" : "#ff9500") },
+    u_colorD: { value: new THREE.Color(isDark ? "#5ac8fa" : "#5ac8fa") },
   }), [isDark]);
 
   useFrame((state) => {
     if (!meshRef.current || !materialRef.current) return;
 
     const time = state.clock.getElapsedTime();
-    const rawScroll = scrollYProgress.get();
-    const scroll    = Number.isFinite(rawScroll) ? rawScroll : 0;
+    const motionEnabled = !prefersReducedMotion;
+    const scrollRange = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    const scroll = motionEnabled ? THREE.MathUtils.clamp(window.scrollY / scrollRange, 0, 1) : 0;
 
-    materialRef.current.uniforms.u_time.value = time;
+    materialRef.current.uniforms.u_time.value = motionEnabled ? time : 0;
     materialRef.current.uniforms.u_mouse.value.set(
-      smoothMouseX.get(), smoothMouseY.get()
+      motionEnabled ? smoothMouseX.get() : 0,
+      motionEnabled ? smoothMouseY.get() : 0
     );
 
     // Signal ready after first successful frame
@@ -250,55 +240,59 @@ function BlobMesh({ isDark, onReady }) {
 
     // Scroll velocity → reactive Z lean
     const delta = scroll - prevScroll.current;
-    scrollVelocity.current = THREE.MathUtils.lerp(
-      scrollVelocity.current, delta * 120, 0.14
-    );
+    if (!motionEnabled || Math.abs(delta) > 0.12) {
+      scrollVelocity.current = 0;
+    } else {
+      scrollVelocity.current = THREE.MathUtils.lerp(
+        scrollVelocity.current, delta * 120, 0.14
+      );
+    }
     prevScroll.current = scroll;
 
     // Scale
     const baseScale = Math.min(viewport.width, viewport.height) * 0.45;
     let scale = baseScale;
 
-    // Y parallax
+    // Y parallax — reduced range so blob drifts less on its own
     let yOffset;
     if (scroll > 0.95) {
       const excess = (scroll - 0.95) / 0.05;
-      yOffset = THREE.MathUtils.lerp(-viewport.height * 0.1, -viewport.height * 0.5, excess);
-      scale   = baseScale * (1 + excess * 0.28);
+      yOffset = THREE.MathUtils.lerp(-viewport.height * 0.05, -viewport.height * 0.3, excess);
+      scale   = baseScale * (1 + excess * 0.18);
     } else {
-      yOffset = THREE.MathUtils.lerp(viewport.height * 0.12, -viewport.height * 0.12, scroll / 0.95);
+      yOffset = THREE.MathUtils.lerp(viewport.height * 0.06, -viewport.height * 0.06, scroll / 0.95);
     }
 
     // Entrance animation: smooth growth and initial spin
-    const entranceRaw = Math.min(time / 2.0, 1.0); // 0 to 1 over 2 seconds
+    const entranceRaw = motionEnabled ? Math.min(time / 1.4, 1.0) : 1;
     const easeOutExpo = entranceRaw === 1 ? 1 : 1 - Math.pow(2, -10 * entranceRaw);
-    
-    scale = scale * easeOutExpo;
+
+    scale = scale * (0.96 + 0.04 * easeOutExpo);
     meshRef.current.scale.setScalar(scale);
 
     // X drift — sinusoidal across sections. Start slightly right.
     const xBaseOffset = viewport.width * 0.15;
-    const xDrift = xBaseOffset + Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.25;
+    const xDrift = xBaseOffset + (motionEnabled ? Math.sin(scroll * Math.PI * 1.5) * viewport.width * 0.25 : 0);
     meshRef.current.position.set(xDrift, yOffset, 0);
 
     // Initial spin that slows down as it reaches full size
-    const initialSpin = (1 - easeOutExpo) * Math.PI * 4;
+    const initialSpin = motionEnabled ? (1 - easeOutExpo) * 0.18 : 0;
 
-    // Rotation
+    // Rotation — purely idle + scroll driven; mouse only deforms surface via shader
     meshRef.current.rotation.x = THREE.MathUtils.lerp(
       meshRef.current.rotation.x,
-      -smoothMouseY.get() * 0.40 + scroll * 1.8 + initialSpin * 0.5,
+      motionEnabled ? scroll * 0.6 + initialSpin * 0.5 : 0,
       0.04
     );
     meshRef.current.rotation.y = THREE.MathUtils.lerp(
       meshRef.current.rotation.y,
-      smoothMouseX.get() * 0.40 + time * 0.024 + scrollVelocity.current * 0.5 + initialSpin,
+      motionEnabled ? time * 0.006 + scrollVelocity.current * 0.2 + initialSpin : 0,
       0.04
     );
     meshRef.current.rotation.z = THREE.MathUtils.lerp(
       meshRef.current.rotation.z,
-      scrollVelocity.current * 0.25 + initialSpin * 0.2,
-      0.07
+      motionEnabled ? scrollVelocity.current * 0.1 + initialSpin * 0.2 : 0,
+      0.05
     );
   });
 
@@ -331,7 +325,7 @@ export default function WebGLBlob() {
       className="fixed inset-0 z-[0] pointer-events-none"
       style={{
         mixBlendMode: isDark ? "screen" : "multiply",
-        opacity: isDark ? 0.72 : 0.62,
+        opacity: isDark ? 0.85 : 0.45,
       }}
     >
       <Canvas

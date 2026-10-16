@@ -7,18 +7,15 @@ export function useLoading() {
 }
 
 export function LoadingProvider({ children }) {
-  const [blobReady, setBlobReadyState] = useState(false);
-  const [photoReady, setPhotoReadyState] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  // Start dismissed immediately — no loading screen
+  const [dismissed, setDismissed] = useState(true);
 
-  const isReady = blobReady && photoReady;
-
-  const setBlobReady = useCallback(() => setBlobReadyState(true), []);
-  const setPhotoReady = useCallback(() => setPhotoReadyState(true), []);
+  const setBlobReady = useCallback(() => {}, []);
+  const setPhotoReady = useCallback(() => {}, []);
   const dismiss = useCallback(() => setDismissed(true), []);
 
   return (
-    <LoadingContext.Provider value={{ blobReady, photoReady, isReady, dismissed, setBlobReady, setPhotoReady, dismiss }}>
+    <LoadingContext.Provider value={{ blobReady: true, photoReady: true, isReady: true, dismissed, setBlobReady, setPhotoReady, dismiss }}>
       {children}
     </LoadingContext.Provider>
   );

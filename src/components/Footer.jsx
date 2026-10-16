@@ -1,10 +1,7 @@
 import { profile } from "../data/siteData";
-import { useTheme } from "../context/ThemeContext";
 import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 
 export default function Footer() {
-  const { mode } = useTheme();
-  const isDark = mode === "dark";
   const year = new Date().getFullYear();
 
   const socials = [
@@ -14,25 +11,27 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ backgroundColor: "var(--color-footer-bg)", borderTop: "1px solid var(--color-footer-border)" }} className="py-10 relative z-50">
-      <div className="mx-auto max-w-6xl px-6 flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
-        <p className="text-sm" style={{ color: "var(--color-footer-text)" }}>
-          © {year}{" "}
-          <span className="font-semibold" style={{ color: isDark ? "var(--color-accent)" : "#e2e8f0" }}>{profile.name}</span>
-          . All rights reserved.
+    <footer className="footer-glass relative z-50 py-8">
+      <div className="mx-auto max-w-5xl px-6 flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
+        <p className="text-xs" style={{ color: "var(--color-footer-text)" }}>
+          © {year} {profile.name}. All rights reserved.
         </p>
 
-        <div className="flex items-center gap-4">
-          {socials.map(({ icon: Icon, href, label }) => (
-            <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-              className={`flex h-9 w-9 cursor-pointer items-center justify-center transition-all duration-200 no-underline text-[var(--color-footer-text)] hover:text-[var(--color-accent)] border ${isDark ? "border-[var(--color-border)]" : "border-[rgba(255,255,255,0.1)]"} hover:border-[var(--color-accent)]`}
-              style={{
-                borderRadius: isDark ? 0 : "0.5rem",
-              }}
-            >
-              <Icon className="h-4 w-4" />
-            </a>
-          ))}
+        <div className="flex items-center gap-3">
+          {socials.map((item) => {
+            const Icon = item.icon;
+            return (
+              <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.label}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-[color,transform,background-color] duration-200 ease-[var(--ease-out)] hover:scale-105 active:scale-95 select-none touch-manipulation no-underline"
+                style={{
+                  color: "var(--color-footer-text)",
+                  backgroundColor: "var(--color-accent-soft)",
+                }}
+              >
+                <Icon className="h-3.5 w-3.5" />
+              </a>
+            );
+          })}
         </div>
       </div>
     </footer>

@@ -20,9 +20,15 @@ export function ThemeProvider({ children }) {
   // Apply theme to <html> on mount and changes
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", mode);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute(
+      "content",
+      mode === "dark" ? "#09090b" : "#ffffff"
+    );
     try {
       localStorage.setItem("portfolio-theme", mode);
-    } catch { }
+    } catch {
+      // Ignore localStorage errors in private browsing
+    }
   }, [mode]);
 
   const toggleMode = useCallback((e) => {
@@ -45,7 +51,7 @@ export function ThemeProvider({ children }) {
     }
 
     // Set the overlay color to the NEW theme's background
-    overlay.style.backgroundColor = newMode === "dark" ? "#08080c" : "#ffffff";
+    overlay.style.backgroundColor = newMode === "dark" ? "#09090b" : "#ffffff";
     overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
     overlay.style.display = "block";
     overlay.style.opacity = "1";

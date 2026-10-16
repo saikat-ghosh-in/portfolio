@@ -7,9 +7,10 @@ export default function ThemeToggle() {
   const isDark = mode === "dark";
 
   return (
-    <button
+    <motion.button
+      whileTap={{ scale: 0.95 }}
       onClick={(e) => toggleMode(e)}
-      className="relative flex items-center justify-between w-[72px] h-9 rounded-full p-1 transition-colors duration-300 cursor-pointer"
+      className="relative flex items-center justify-between w-[72px] h-9 rounded-full p-1 transition-[background-color,border-color,box-shadow] duration-200 cursor-pointer select-none touch-manipulation"
       style={{ 
         backgroundColor: "var(--color-bg-surface-alt)", 
         border: "1px solid var(--color-border)",
@@ -25,18 +26,18 @@ export default function ThemeToggle() {
         animate={{ 
           x: isDark ? 34 : 0,
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
       />
 
       {/* Sun Icon */}
       <div className="relative z-10 flex items-center justify-center w-7 h-7">
-        <FiSun className="w-4 h-4 transition-colors duration-300" style={{ color: !isDark ? "var(--color-accent)" : "var(--color-text-muted)" }} />
+        <FiSun className="w-4 h-4 transition-colors duration-200" style={{ color: !isDark ? "var(--color-accent)" : "var(--color-text-muted)" }} />
       </div>
 
       {/* Moon Icon */}
       <div className="relative z-10 flex items-center justify-center w-7 h-7">
-        <FiMoon className="w-4 h-4 transition-colors duration-300" style={{ color: isDark ? "var(--color-accent)" : "var(--color-text-muted)" }} />
+        <FiMoon className="w-4 h-4 transition-colors duration-200" style={{ color: isDark ? "var(--color-accent)" : "var(--color-text-muted)" }} />
       </div>
-    </button>
+    </motion.button>
   );
 }

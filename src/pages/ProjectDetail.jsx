@@ -1,17 +1,14 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import projects from "../data/projects";
-import { useTheme } from "../context/ThemeContext";
 import { FiArrowLeft, FiExternalLink, FiGithub, FiCheckCircle } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 export default function ProjectDetail() {
   const { title } = useParams();
-  const { mode } = useTheme();
-  const isDark = mode === "dark";
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [title]);
 
   const project = projects.find((p) => p.title.toLowerCase().replace(/\s+/g, '-') === title);
@@ -27,42 +24,35 @@ export default function ProjectDetail() {
 
   // Animation variants
   const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 12 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.23, 1, 0.32, 1] } }
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
   };
-
-
 
   return (
     <>
-      <motion.div 
-        className="min-h-screen pt-28 pb-0"
-        initial={{ clipPath: "circle(0% at 50% 50%)" }}
-        animate={{ clipPath: "circle(150% at 50% 50%)" }}
-        transition={{ duration: 1.0, ease: [0.7, 0, 0.1, 1] }}
-      >
+      <div className="min-h-screen pt-28 pb-0">
 
         {/* HERO SECTION */}
         <section className="relative px-6 py-12 md:py-24 mx-auto max-w-7xl overflow-hidden">
 
           <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="relative z-10 glass-text p-8 md:p-12">
             <motion.div variants={fadeUp}>
-              <Link to="/" className="mb-12 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-colors hover:text-[var(--color-accent)]" style={{ color: "var(--color-text-muted)" }}>
+              <Link to="/" className="mb-12 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest transition-colors duration-150 hover:text-[var(--color-accent)] active:scale-95 select-none touch-manipulation" style={{ color: "var(--color-text-muted)" }}>
                 <FiArrowLeft className="h-4 w-4" /> Back to Portfolio
               </Link>
             </motion.div>
 
             <motion.div variants={fadeUp} className="mb-6 flex flex-wrap gap-3">
-              {project.featured && <span className="badge px-4 py-1.5 text-xs tracking-wider uppercase" style={{ borderRadius: "9999px" }}>Featured</span>}
+              {project.featured && <span className="badge px-4 py-1.5 text-xs tracking-wider uppercase select-none" style={{ borderRadius: "9999px" }}>Featured</span>}
               {project.status && (
-                <span className="inline-flex items-center justify-center leading-none text-xs font-bold tracking-wider uppercase px-4 py-1.5" style={{
-                  backgroundColor: isDark ? "rgba(34,197,94,0.15)" : "rgba(34,197,94,0.1)",
-                  color: isDark ? "#4ade80" : "#16a34a",
+                <span className="inline-flex items-center justify-center leading-none text-xs font-bold tracking-wider uppercase px-4 py-1.5 select-none" style={{
+                  backgroundColor: "var(--color-success-soft)",
+                  color: "var(--color-success)",
                   borderRadius: "9999px",
                 }}>{project.status}</span>
               )}
@@ -71,36 +61,36 @@ export default function ProjectDetail() {
             <div className="flex flex-wrap items-center gap-6 md:gap-12 mb-6">
               <motion.h1
                 variants={fadeUp}
-                className="font-display font-black leading-none"
-                style={{ fontSize: "clamp(3rem, 10vw, 8rem)", color: "var(--color-text-heading)", textTransform: "uppercase", letterSpacing: "-0.02em" }}
+                className="font-display font-black leading-none w-full"
+                style={{ fontSize: "clamp(2.5rem, 8vw, 7rem)", color: "var(--color-text-heading)", textTransform: "uppercase", letterSpacing: "-0.02em" }}
               >
                 {project.title}
               </motion.h1>
             </div>
 
-            <motion.p variants={fadeUp} className="max-w-2xl text-base sm:text-lg md:text-2xl font-light leading-relaxed mb-12" style={{ color: "var(--color-text-body)" }}>
+            <motion.p variants={fadeUp} className="max-w-2xl text-sm sm:text-base md:text-xl font-light leading-relaxed mb-10" style={{ color: "var(--color-text-body)" }}>
               {project.tagline}
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               {project.liveUrl && project.liveUrl !== "#" && (
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
-                  className="group relative flex-1 sm:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-full overflow-hidden"
+                  className="group relative flex-1 sm:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-full overflow-hidden active:scale-[0.97] transition-transform duration-150 ease-[var(--ease-out)] select-none touch-manipulation"
                   style={{ backgroundColor: "var(--color-text-heading)", color: "var(--color-bg-primary)" }}
                 >
                   <span className="relative z-10 font-bold uppercase tracking-widest text-[10px] sm:text-sm text-center">Visit Live Demo</span>
-                  <FiExternalLink className="relative z-10 w-3 h-3 sm:w-4 sm:h-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  <div className="absolute inset-0 transition-transform duration-300 origin-left scale-x-0 group-hover:scale-x-100" style={{ backgroundColor: "var(--color-accent)" }} />
+                  <FiExternalLink className="relative z-10 w-3 h-3 sm:w-4 sm:h-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <div className="absolute inset-0 transition-transform duration-200 origin-left scale-x-0 group-hover:scale-x-100" style={{ backgroundColor: "var(--color-accent)" }} />
                 </a>
               )}
 
               {project.githubUrl && project.githubUrl !== "#" && (
                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-                  className="group relative flex-1 sm:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-full transition-colors duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  className="group relative flex-1 sm:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3 sm:py-4 rounded-full transition-colors duration-200 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] active:scale-[0.97] select-none touch-manipulation"
                   style={{ border: `2px solid var(--color-border)`, color: "var(--color-text-heading)" }}
                 >
                   <span className="font-bold uppercase tracking-widest text-[10px] sm:text-sm text-center">Source Code</span>
-                  <FiGithub className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 transition-transform duration-300 group-hover:rotate-12" />
+                  <FiGithub className="w-3 h-3 sm:w-4 sm:h-4 shrink-0 transition-transform duration-200 group-hover:rotate-6" />
                 </a>
               )}
             </motion.div>
@@ -142,7 +132,7 @@ export default function ProjectDetail() {
 
         {/* CORE MODULES (OR FALLBACK HIGHLIGHTS) */}
         {(project.modules?.length > 0 || project.highlights?.length > 0) && (
-          <section className="py-24 md:py-40">
+          <section className="py-24 md:py-40 section-tint">
             <div className="px-6 mx-auto max-w-7xl">
               <div className="glass-text p-8 md:p-16">
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-16 md:mb-24">
@@ -215,7 +205,7 @@ export default function ProjectDetail() {
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Frontend</h3>
                     <div className="flex flex-wrap gap-3">
                       {project.techFrontend.map(t => (
-                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
+                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-surface-sunken)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
                       ))}
                     </div>
                   </motion.div>
@@ -228,7 +218,7 @@ export default function ProjectDetail() {
                     <h3 className="text-2xl font-bold uppercase tracking-widest mb-10" style={{ color: "var(--color-accent)" }}>Backend & Infra</h3>
                     <div className="flex flex-wrap gap-3">
                       {project.techBackend.map(t => (
-                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
+                        <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-surface-sunken)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
                       ))}
                     </div>
                   </motion.div>
@@ -241,7 +231,7 @@ export default function ProjectDetail() {
               >
                 <div className="flex flex-wrap justify-center gap-3">
                   {project.tech.map(t => (
-                    <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
+                    <span key={t} className="px-5 py-3 rounded-full text-sm font-bold tracking-wide" style={{ backgroundColor: "var(--color-bg-surface-sunken)", color: "var(--color-text-heading)", border: `1px solid var(--color-border)` }}>{t}</span>
                   ))}
                 </div>
               </motion.div>
@@ -249,7 +239,7 @@ export default function ProjectDetail() {
           </section>
         )}
 
-      </motion.div>
+      </div>
     </>
   );
 }

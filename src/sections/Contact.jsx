@@ -1,15 +1,9 @@
 import { useState } from "react";
 import SectionWrapper from "../components/SectionWrapper";
-import { contact } from "../data/siteData";
-import { useTheme } from "../context/ThemeContext";
-import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
+import { contact, profile } from "../data/siteData";
 import { motion } from "framer-motion";
 
-const iconMap = { mail: FiMail, phone: FiPhone, location: FiMapPin };
-
 export default function Contact() {
-  const { mode } = useTheme();
-  const isDark = mode === "dark";
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle");
 
@@ -32,87 +26,113 @@ export default function Contact() {
       } else {
         setStatus("error");
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
     }
     setTimeout(() => setStatus("idle"), 3000);
   };
 
   return (
-    <SectionWrapper id="contact" className="py-12">
-      <div className="py-12 relative">
-        <div className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: "var(--color-accent)" }} />
-        <div className="mx-auto max-w-6xl px-6">
-          {/* Header */}
-          <div className="mb-14 text-left">
-            <h2 className="section-title" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <span style={{ color: "var(--color-accent)" }}>/</span>
-              Contact
-            </h2>
-            <div className="section-divider mt-4" />
-          </div>
+    <SectionWrapper id="contact" className="py-20">
+      <div className="glass-surface mx-auto max-w-5xl px-5 py-6 sm:px-8 sm:py-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
+        >
+          <p className="mb-3 text-sm font-medium" style={{ color: "var(--color-text-muted)" }}>Contact</p>
+          <h2 className="text-4xl font-semibold tracking-tight" style={{ color: "var(--color-text-heading)" }}>
+            Get in touch.
+          </h2>
+        </motion.div>
 
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* Info */}
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true, margin: "-80px" }}>
-              <div className="glass-text p-7">
-              <h3 className="mb-4 text-xl font-bold" style={{ color: "var(--color-text-heading)" }}>Get In Touch</h3>
-              <p className="mb-8 text-base leading-relaxed max-w-md" style={{ color: "var(--color-text-body)" }}>{contact.text}</p>
-
-              <div className="space-y-4">
-                {contact.links.map((link, idx) => {
-                  const Icon = iconMap[link.icon] || FiMail;
-                  return (
-                    <div key={idx} className="flex items-center gap-4 group">
-                      <span className="flex h-10 w-10 items-center justify-center transition-all" style={{
-                        backgroundColor: "var(--color-accent-soft)",
-                        color: "var(--color-accent)",
-                        borderRadius: isDark ? 0 : "0.5rem",
-                        border: isDark ? "1px solid var(--color-accent)" : "none",
-                      }}>
-                        <Icon className="h-4 w-4" />
-                      </span>
-                      {link.url ? (
-                        <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium no-underline" style={{ color: "var(--color-text-body)" }}>{link.label}</a>
-                      ) : (
-                        <span className="text-sm font-medium" style={{ color: "var(--color-text-body)" }}>{link.label}</span>
-                      )}
-                    </div>
-                  );
-                })}
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-12">
+          {/* Left Text & Socials */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
+            className="w-full md:w-1/3"
+          >
+            <p className="mb-8 text-lg" style={{ color: "var(--color-text-muted)" }}>
+              {contact.text}
+            </p>
+            
+            <div className="space-y-6">
+              <div>
+                <p className="mb-3 text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Email</p>
+                <a href={`mailto:${profile.email}`} className="text-sm underline underline-offset-4 transition-colors" style={{ color: "var(--color-text-muted)" }}>
+                  {profile.email}
+                </a>
               </div>
+              
+              <div>
+                <p className="mb-3 text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Social</p>
+                <ul className="space-y-2">
+                  <li>
+                    <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-sm transition-colors hover:underline underline-offset-4" style={{ color: "var(--color-text-muted)" }}>
+                      LinkedIn
+                    </a>
+                  </li>
+                  <li>
+                    <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-sm transition-colors hover:underline underline-offset-4" style={{ color: "var(--color-text-muted)" }}>
+                      GitHub
+                    </a>
+                  </li>
+                </ul>
               </div>
-            </motion.div>
 
-            {/* Form */}
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true, margin: "-80px" }}>
-              <form onSubmit={handleSubmit} className="card p-7">
-                <div className="space-y-5">
-                  {contact.form.fields.map((field) => (
-                    <div key={field.name}>
-                      <label htmlFor={field.name} className="mb-1.5 block text-sm font-semibold" style={{ color: "var(--color-text-heading)" }}>{field.label}</label>
-                      {field.type === "textarea" ? (
-                        <textarea id={field.name} name={field.name} value={formData[field.name]} onChange={handleChange} placeholder={field.placeholder} required
-                          className="w-full resize-none h-28 px-4 py-3 text-sm outline-none transition-all"
-                          style={{ backgroundColor: "var(--color-glass-bg)", backdropFilter: "blur(12px)", border: isDark ? "none" : "1px solid var(--color-input-border)", borderBottom: isDark ? "2px solid var(--color-border)" : undefined, borderRadius: "var(--radius-input)", color: "var(--color-input-text)" }}
-                        />
-                      ) : (
-                        <input type={field.type} id={field.name} name={field.name} value={formData[field.name]} onChange={handleChange} placeholder={field.placeholder} required
-                          className="w-full px-4 py-3 text-sm outline-none transition-all"
-                          style={{ backgroundColor: "var(--color-glass-bg)", backdropFilter: "blur(12px)", border: isDark ? "none" : "1px solid var(--color-input-border)", borderBottom: isDark ? "2px solid var(--color-border)" : undefined, borderRadius: "var(--radius-input)", color: "var(--color-input-text)" }}
-                        />
-                      )}
-                    </div>
-                  ))}
-                  <button type="submit" disabled={status === "submitting"} className="btn-primary w-full justify-center">
-                    {status === "submitting" ? "Sending..." : contact.form.buttonText}
-                  </button>
-                  {status === "success" && <p className="mt-3 text-center text-sm font-medium" style={{ color: "#16a34a" }}>Message sent successfully!</p>}
-                  {status === "error" && <p className="mt-3 text-center text-sm font-medium" style={{ color: "#dc2626" }}>Failed to send message. Please try again.</p>}
+              <div>
+                <p className="mb-3 text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Location</p>
+                <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
+                  {profile.location}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Form */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="w-full md:w-1/2"
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="name" className="mb-2 block text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Name</label>
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
+                    className="w-full border-b py-2 text-sm outline-none bg-transparent transition-colors"
+                    style={{ borderColor: "var(--color-border)", color: "var(--color-text-heading)" }}
+                  />
                 </div>
-              </form>
-            </motion.div>
-          </div>
+                <div>
+                  <label htmlFor="email" className="mb-2 block text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Email</label>
+                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
+                    className="w-full border-b py-2 text-sm outline-none bg-transparent transition-colors"
+                    style={{ borderColor: "var(--color-border)", color: "var(--color-text-heading)" }}
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="message" className="mb-2 block text-sm font-medium" style={{ color: "var(--color-text-heading)" }}>Message</label>
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required
+                  className="w-full resize-none border-b py-2 h-24 text-sm outline-none bg-transparent transition-colors"
+                  style={{ borderColor: "var(--color-border)", color: "var(--color-text-heading)" }}
+                />
+              </div>
+              <button type="submit" disabled={status === "submitting"} className="btn-primary w-full sm:w-auto h-12 px-8">
+                {status === "submitting" ? "Sending..." : "Shoot me an email"}
+              </button>
+              {status === "success" && <p className="mt-3 text-sm font-medium" style={{ color: "var(--color-success)" }}>Message sent successfully!</p>}
+              {status === "error" && <p className="mt-3 text-sm font-medium" style={{ color: "var(--color-error)" }}>Failed to send. Please try again.</p>}
+            </form>
+          </motion.div>
         </div>
       </div>
     </SectionWrapper>

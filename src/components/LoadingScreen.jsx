@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const DOTS = [".", "..", "..."];
 
 export default function LoadingScreen() {
-  const { isReady, dismissed, dismiss } = useLoading();
+  const { isReady, dismiss } = useLoading();
   const [show, setShow] = useState(true);
   const [dot, setDot] = useState(0);
   const overlayRef = useRef(null);
@@ -38,8 +38,8 @@ export default function LoadingScreen() {
           { clipPath: "circle(0%   at 50% 20%)" },
         ],
         {
-          duration: 900,
-          easing: "cubic-bezier(0.7, 0, 0.1, 1)",
+          duration: 450,
+          easing: "cubic-bezier(0.23, 1, 0.32, 1)",
           fill: "forwards",
         }
       );
@@ -80,9 +80,9 @@ export default function LoadingScreen() {
       <div className="relative z-10 flex flex-col items-center gap-8">
         {/* Logo / initials */}
         <motion.div
-          initial={{ scale: 0.7, opacity: 0 }}
+          initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
           className="relative flex items-center justify-center w-24 h-24 rounded-2xl"
           style={{
             background:
@@ -91,8 +91,8 @@ export default function LoadingScreen() {
           }}
         >
           <span
-            className="font-black text-4xl text-white select-none"
-            style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.04em" }}
+            className="font-black text-4xl select-none"
+            style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.04em", color: "var(--color-text-on-accent)" }}
           >
             SG
           </span>
