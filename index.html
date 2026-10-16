@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/portfolio/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#09090b" />
+  <meta name="color-scheme" content="light dark" />
 
   <!-- SEO -->
   <title>Saikat Ghosh | Java Developer</title>
@@ -28,33 +30,34 @@
   <meta name="twitter:description"
     content="Java Developer with 3.8 years of experience building scalable backend systems with Spring Boot, microservices, and React." />
 
-  <!-- Google Fonts: Inter + Oswald -->
+  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet" />
 
   <script>
     // Prevent flash of wrong theme
     (function () {
       try {
-        var theme = localStorage.getItem('portfolio-theme') || 'light';
+        var theme = localStorage.getItem('portfolio-theme') || 'dark';
         document.documentElement.setAttribute('data-theme', theme);
-        if (theme === 'dark') document.documentElement.style.backgroundColor = '#08080c';
+        if (theme === 'dark') document.documentElement.style.backgroundColor = '#09090b';
+        else document.documentElement.style.backgroundColor = '#ffffff';
       } catch (e) { }
     })();
   </script>
-  <script type="module" crossorigin src="/portfolio/assets/index-uNS1hPvK.js"></script>
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/ThemeContext-CJrheJfm.js">
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/chunk-OE4NN4TA-BfvtSGCi.js">
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/MotionConfigContext-B6aKfnxg.js">
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/proxy-CxRUEfrH.js">
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/fi-DflKjfSK.js">
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/LoadingContext-C6DwpSvx.js">
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/SectionWrapper-DOj4WDQD.js">
-  <link rel="modulepreload" crossorigin href="/portfolio/assets/siteData-BULENVod.js">
-  <link rel="stylesheet" crossorigin href="/portfolio/assets/index-GIfufq1y.css">
+  <script type="module" crossorigin src="/portfolio/assets/index-BP3qp-lr.js"></script>
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/jsx-runtime-DyTGnfRu.js">
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/chunk-OE4NN4TA-CYrEWNsX.js">
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/MotionConfigContext-DWLxBQmg.js">
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/proxy-boOURbIO.js">
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/AnimatePresence-DrFIZunZ.js">
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/fi-DtURVz_6.js">
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/LoadingContext-fD1DpErj.js">
+  <link rel="modulepreload" crossorigin href="/portfolio/assets/siteData-BPiw-5F2.js">
+  <link rel="stylesheet" crossorigin href="/portfolio/assets/index-DxYa_eBw.css">
 </head>
 
 <body>
