@@ -1,0 +1,12 @@
+/* Static feathered colors, animated only through a slow compositor transform. */
+.aurora-section{position:relative;isolation:isolate;--aurora-a:#c8ed7280;--aurora-b:#8ba9f766;--aurora-c:#9ce5cb73;--aurora-duration:64s;--aurora-delay:-14s}
+.aurora-field{position:absolute;inset:0;z-index:-1;overflow:clip;pointer-events:none;mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-composite:intersect}
+.aurora-layer{position:absolute;inset:-16% -12%;pointer-events:none;contain:strict;background:radial-gradient(ellipse 58% 28% at 75% 30%,var(--aurora-b) 0%,transparent 75%),radial-gradient(ellipse 62% 26% at 25% 65%,var(--aurora-a) 0%,transparent 74%),radial-gradient(ellipse 38% 58% at 55% 46%,var(--aurora-c) 0%,transparent 74%);transform:translate3d(-4%,2%,0) rotate(-5deg) scale(1.04);transform-origin:center;opacity:.88}
+.aurora-active>.aurora-field>.aurora-layer{animation:aurora-drift var(--aurora-duration) cubic-bezier(.45,0,.55,1) var(--aurora-delay) infinite alternate}
+.aurora-dark{--aurora-a:#83c47b40;--aurora-b:#4674d947;--aurora-c:#33b3a12e;--aurora-duration:76s;--aurora-delay:-31s}
+.aurora-soft{--aurora-a:#c9e6a15c;--aurora-b:#a3b9ec4d;--aurora-c:#a5ddc952;--aurora-duration:72s;--aurora-delay:-24s}
+.aurora-sage{--aurora-a:#d9f3ac66;--aurora-b:#91b7df4d;--aurora-c:#9de1c066;--aurora-duration:68s;--aurora-delay:-38s}
+.aurora-lime{--aurora-a:#b5e7a366;--aurora-b:#93bded4d;--aurora-c:#fff9c170;--aurora-duration:80s;--aurora-delay:-19s}
+@keyframes aurora-drift{from{transform:translate3d(-4%,2%,0) rotate(-5deg) scale(1.04)}to{transform:translate3d(4%,-3%,0) rotate(5deg) scale(1.12)}}
+@media(prefers-reduced-motion:reduce){.aurora-active>.aurora-field>.aurora-layer{animation:none}}
+@media print{.aurora-layer{display:none}}
