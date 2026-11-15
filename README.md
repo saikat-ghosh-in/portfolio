@@ -2,7 +2,7 @@
 
 A responsive, lightweight portfolio with tactile artwork, slow CSS aurora motion, and clear recruiter navigation.
 
-Live: https://saikat-ghosh-in.github.io/portfolio/
+Live: https://saikat-ghosh-portfolio.pages.dev/
 
 ## Develop
 
@@ -39,7 +39,7 @@ Git must already be signed in with write access (Git Credential Manager or SSH),
 npm run deploy -- --remote https://github.com/saikat-ghosh-in/portfolio.git
 ```
 
-Cloudflare Pages must connect to this repository with production branch **deploy**, framework preset **None**, build command **exit 0**, and build output directory **.** (the branch root). The deployment branch already contains the built static website. A successful Git push starts publication; Cloudflare's deployment status confirms when it is live.
+Cloudflare Pages connects to this repository with production branch **deploy**, framework preset **None**, build command **exit 0**, and build output directory **.** (the branch root). Automatic preview branch deployments are disabled. The deployment branch already contains the built static website. A successful Git push starts publication; Cloudflare's deployment status confirms when it is live.
 
 The source remains on `main`; only `deploy` is published. GitHub Pages is retired and its `gh-pages` branch is no longer used. No Cloudflare API token or paid service is needed for this Git integration.
 
