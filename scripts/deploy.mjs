@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync, spawnSync } from 'node:child_process';
 
 const root = fileURLToPath(new URL('../',import.meta.url));
+const branch = 'deploy';
 const args = process.argv.slice(2);
 if (args.length && !(args.length === 2 && args[0] === '--remote' && args[1] && !args[1].startsWith('-'))) {
   console.error('Usage: npm run deploy [-- --remote <Git URL or local path>]');
@@ -19,13 +20,13 @@ try {
   if (!supplied || supplied.startsWith('-')) throw new Error('A valid origin remote is required');
   const networkRemote = /^[a-z][a-z0-9+.-]*:\/\//i.test(supplied) || /^[^/\\:]+(?:@[^/\\:]+)?:/.test(supplied);
   const remote = isAbsolute(supplied) || !networkRemote ? resolve(root,supplied) : supplied;
-  const existing = git(root,'ls-remote','--heads',remote,'refs/heads/gh-pages');
+  const existing = git(root,'ls-remote','--heads',remote,`refs/heads/${branch}`);
   temp = await mkdtemp(join(tempParent,'portfolio-pages-'));
   const checkout = join(temp,'checkout');
-  git(temp,'init','-b','gh-pages',checkout);
+  git(temp,'init','-b',branch,checkout);
   git(checkout,'remote','add','origin',remote);
   if (existing) {
-    git(checkout,'fetch','origin','gh-pages');
+    git(checkout,'fetch','origin',branch);
     git(checkout,'reset','--hard','FETCH_HEAD');
   }
   for (const name of ['user.name','user.email']) {
@@ -41,11 +42,11 @@ try {
   await cp(join(root,'build'),checkout,{recursive:true});
   git(checkout,'add','--all');
   if (existing && !git(checkout,'status','--porcelain')) {
-    console.log('gh-pages is already up to date.');
+    console.log('deploy is already up to date.');
   } else {
-    git(checkout,'commit','-m','Deploy portfolio to GitHub Pages');
-    git(checkout,'push','origin','HEAD:refs/heads/gh-pages');
-    console.log('Published build to gh-pages. GitHub Pages will deploy it shortly.');
+    git(checkout,'commit','-m','Publish portfolio build for Cloudflare Pages');
+    git(checkout,'push','origin',`HEAD:refs/heads/${branch}`);
+    console.log('Pushed build to deploy. The connected Cloudflare Pages project will publish it.');
   }
 } catch (error) {
   console.error(`Deployment failed: ${error.message}`);

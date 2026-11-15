@@ -25,13 +25,13 @@ npm run build
 
 The build validates internal links, local assets, image dimensions and transfer budgets, then copies the website to `build/` with `.nojekyll`. Build output is ignored by Git. Tests exercise deployment with a local bare Git repository.
 
-## Deploy to GitHub Pages
+## Deploy to Cloudflare Pages
 
 ```sh
 npm run deploy
 ```
 
-This builds the current files and pushes only the generated website to the `gh-pages` branch of `origin`. It removes stale published files, skips unchanged deployments and uses an ordinary push. Your source branch and working files stay in place. Commit and push source edits to `main` separately to save them on GitHub.
+This builds the current files and pushes only the generated website to the `deploy` branch of `origin`. The connected Cloudflare Pages project automatically publishes that branch. It removes stale published files, skips unchanged deployments and uses an ordinary push. Your source branch and working files stay in place. Commit and push source edits to `main` separately to save them on GitHub.
 
 Git must already be signed in with write access (Git Credential Manager or SSH), with `user.name` and `user.email` configured. Authentication or push failures exit unsuccessfully. No tokens are stored by the script. To use a different remote:
 
@@ -39,7 +39,9 @@ Git must already be signed in with write access (Git Credential Manager or SSH),
 npm run deploy -- --remote https://github.com/saikat-ghosh-in/portfolio.git
 ```
 
-Repository Settings → Pages must use **Deploy from a branch**, **gh-pages**, **/(root)**. GitHub's Pages build may take a few minutes after a push.
+Cloudflare Pages must connect to this repository with production branch **deploy**, framework preset **None**, build command **exit 0**, and build output directory **.** (the branch root). The deployment branch already contains the built static website. A successful Git push starts publication; Cloudflare's deployment status confirms when it is live.
+
+The source remains on `main`; only `deploy` is published. GitHub Pages is retired and its `gh-pages` branch is no longer used. No Cloudflare API token or paid service is needed for this Git integration.
 
 ## Design and performance
 

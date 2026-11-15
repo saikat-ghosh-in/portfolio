@@ -43,7 +43,7 @@ test('build publishes only current static assets and disables Jekyll',async t=>{
 });
 
 // Catches source-branch mutation, stale published assets, and non-idempotent deployment.
-test('deploy creates and updates gh-pages while preserving source main',async t=>{
+test('deploy creates and updates deploy while preserving source main',async t=>{
   const {temp,root} = await fixture(t);
   const remote = join(temp,'remote.git');
   run(temp,'git',['init','--bare',remote]);
@@ -56,7 +56,7 @@ test('deploy creates and updates gh-pages while preserving source main',async t=
   await writeFile(join(root,'dist','obsolete.txt'),'obsolete');
   run(root,process.execPath,['scripts/deploy.mjs','--remote','../remote.git']);
   const published = join(temp,'published');
-  run(temp,'git',['clone','--branch','gh-pages',remote,published]);
+  run(temp,'git',['clone','--branch','deploy',remote,published]);
   await access(join(published,'obsolete.txt'));
   await rm(join(root,'dist','obsolete.txt'));
   run(root,process.execPath,['scripts/deploy.mjs']);
@@ -70,6 +70,7 @@ test('deploy creates and updates gh-pages while preserving source main',async t=
   assert.equal(run(root,'git',['rev-parse','HEAD']),original);
   assert.equal(run(root,'git',['branch','--show-current']),'main');
   assert.equal(run(root,'git',['ls-remote','origin','refs/heads/main']).split(/\s/)[0],original);
+  assert.equal(run(root,'git',['ls-remote','origin','refs/heads/gh-pages']),'','Deployment must not recreate GitHub Pages');
   const failed = spawnSync(process.execPath,['scripts/deploy.mjs','--remote',join(temp,'missing.git')],{cwd:root,env,encoding:'utf8'});
   assert.notEqual(failed.status,0,'An unreachable remote must not report success');
 });
