@@ -1,0 +1,19 @@
+html,body{overflow-x:clip}
+.hero-facts{grid-template-columns:repeat(3,minmax(0,1fr));align-items:center}
+.hero-facts>div:nth-child(2){justify-self:center}
+.hero-facts .scroll-cue{justify-self:end}
+@media(max-width:760px){.hero-facts{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-facts>div:last-of-type{grid-column:auto;justify-self:end}}
+.project{grid-template-areas:"visual heading" "visual copy";row-gap:0}
+.project-heading{grid-area:heading;align-self:end}
+.project-visual{grid-area:visual}
+.project-copy{grid-area:copy;align-self:start}
+.project-heading h3{font-size:58px;letter-spacing:-3px;line-height:1.1;font-weight:500;margin-top:20px}
+.project-heading .project-subtitle{margin-bottom:18px!important}
+@media(max-width:1050px){.project-heading h3{font-size:48px}}
+@media(max-width:900px){.project{grid-template-columns:1fr;grid-template-areas:"heading" "visual" "copy";row-gap:24px}.project-heading h3{font-size:49px;margin-top:12px}.project-heading .project-subtitle{margin-bottom:0!important}.project-copy{display:block}}
+.menu-toggle .menu-toggle-icon{position:relative;display:inline-block;width:14px;height:14px;margin-left:10px;vertical-align:middle;font-size:0;transform-origin:center;transition:transform 220ms var(--ease)}
+.menu-toggle-icon:before,.menu-toggle-icon:after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;border-radius:1px;background:currentColor;transform:translate(-50%,-50%)}
+.menu-toggle-icon:after{transform:translate(-50%,-50%) rotate(90deg)}
+.menu-toggle[aria-expanded="true"] .menu-toggle-icon{transform:rotate(45deg)}
+@media(max-width:580px){body.js-ready .main-nav{left:auto;right:0;top:calc(100% + 10px);width:min(220px,calc(100vw - 40px));padding:8px;border:0;background:#f7f8f2f2;box-shadow:0 5px 22px #222c2010;transform-origin:top right;transition:opacity 180ms var(--ease),transform 220ms var(--ease),visibility 0s linear 220ms}body.js-ready .main-nav:not(.is-open){display:flex;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px) scale(.98)}body.js-ready .main-nav.is-open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition-delay:0s}body.js-ready .main-nav a{padding:13px 14px;font-size:14px;min-height:44px}}
+@media(prefers-reduced-motion:reduce){.menu-toggle .menu-toggle-icon{transition:none}}
