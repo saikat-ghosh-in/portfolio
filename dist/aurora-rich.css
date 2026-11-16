@@ -1,0 +1,26 @@
+/* Adapted from the supplied aurora.html. Static and scoped to selected surfaces. */
+.aurora-filter-defs{position:absolute;pointer-events:none}
+.aurora-rich{--rich-base:#e4fbd8;--rich-yellow:#fdff00;--rich-cyan:#8eeaff;--rich-sky:#9fdcff;--rich-pink:#ffb0f2;--rich-lilac:#dcb9ff;--rich-mint:#a9ffd2}
+.aurora-rich>.aurora-field{background:var(--rich-base);mask-image:none}
+.landing-aurora>.aurora-field{mask-image:none}
+.aurora-rich>.aurora-field>.aurora-layer{inset:-15%;contain:none;opacity:1;animation:none;transform:none;background-color:var(--rich-base);background-image:radial-gradient(ellipse 24% 28% at 50% 74%,var(--rich-pink) 0%,transparent 72%),radial-gradient(ellipse 16% 20% at 86% 30%,var(--rich-pink) 0%,transparent 72%),radial-gradient(ellipse 20% 24% at 44% 42%,var(--rich-lilac) 0%,transparent 72%),radial-gradient(ellipse 22% 26% at 78% 54%,var(--rich-cyan) 0%,transparent 72%),radial-gradient(ellipse 18% 22% at 20% 78%,var(--rich-cyan) 0%,transparent 72%),radial-gradient(ellipse 12% 16% at 12% 48%,var(--rich-sky) 0%,transparent 72%),radial-gradient(ellipse 34% 38% at 24% 28%,var(--rich-yellow) 0%,transparent 74%),radial-gradient(ellipse 30% 34% at 80% 82%,var(--rich-yellow) 0%,transparent 74%),radial-gradient(ellipse 28% 32% at 58% 28%,var(--rich-yellow) 0%,transparent 74%),radial-gradient(ellipse 24% 28% at 36% 56%,var(--rich-mint) 0%,transparent 72%),radial-gradient(ellipse 20% 24% at 68% 62%,var(--rich-mint) 0%,transparent 72%);filter:url(#aurora-rich-warp) blur(6px)}
+.aurora-rich .aurora-grain{position:absolute;inset:0;pointer-events:none;opacity:.065;mix-blend-mode:multiply;filter:url(#aurora-rich-grain)}
+@media(max-width:580px){.aurora-rich>.aurora-field>.aurora-layer{filter:url(#aurora-rich-warp) blur(4px)}}
+@media print{.aurora-rich>.aurora-field{display:none}}
+
+/* Smooth surfaces use fewer, broader color fields and a gentler warp. */
+.aurora-rich.aurora-smooth>.aurora-field>.aurora-layer{background-image:radial-gradient(ellipse 32% 40% at 72% 76%,var(--rich-pink) 0%,transparent 74%),radial-gradient(ellipse 36% 42% at 48% 68%,var(--rich-lilac) 0%,transparent 74%),radial-gradient(ellipse 46% 50% at 82% 38%,var(--rich-cyan) 0%,transparent 74%),radial-gradient(ellipse 54% 54% at 20% 24%,var(--rich-yellow) 0%,transparent 76%),radial-gradient(ellipse 42% 46% at 24% 82%,var(--rich-mint) 0%,transparent 74%);filter:url(#aurora-hero-warp) blur(10px)}
+.aurora-rich.aurora-smooth .aurora-grain{opacity:.035}
+@media(max-width:580px){.aurora-rich.aurora-smooth>.aurora-field>.aurora-layer{filter:url(#aurora-hero-warp) blur(12px)}}
+
+.aurora-toolkit{--rich-base:#edf0fc;--rich-yellow:#e2e7fc;--rich-cyan:#b3e8ef;--rich-pink:#d8d4fa;--rich-lilac:#b7c4f2;--rich-mint:#d8ebd5}
+.project-visual.aurora-rich>.aurora-field{border-radius:inherit}
+.landing-aurora.aurora-rich{--rich-yellow:#fdff00}
+.landing-aurora.aurora-rich>.aurora-field>.aurora-layer{background-image:radial-gradient(ellipse 28% 32% at 50% 74%,var(--rich-pink) 0%,transparent 72%),radial-gradient(ellipse 20% 24% at 86% 30%,var(--rich-pink) 0%,transparent 72%),radial-gradient(ellipse 24% 28% at 44% 42%,var(--rich-lilac) 0%,transparent 72%),radial-gradient(ellipse 28% 32% at 78% 54%,var(--rich-cyan) 0%,transparent 72%),radial-gradient(ellipse 24% 28% at 20% 78%,var(--rich-cyan) 0%,transparent 72%),radial-gradient(ellipse 34% 38% at 24% 28%,var(--rich-sky) 0%,transparent 74%),radial-gradient(ellipse 30% 34% at 80% 82%,var(--rich-pink) 0%,transparent 74%),radial-gradient(ellipse 28% 32% at 58% 28%,var(--rich-mint) 0%,transparent 74%),radial-gradient(ellipse 24% 28% at 36% 56%,var(--rich-mint) 0%,transparent 72%),radial-gradient(ellipse 20% 24% at 68% 62%,var(--rich-mint) 0%,transparent 72%);filter:url(#aurora-landing-warp) blur(7px)}
+.landing-aurora.aurora-rich .aurora-grain{opacity:.055}
+@media(max-width:580px){.landing-aurora.aurora-rich>.aurora-field>.aurora-layer{filter:url(#aurora-landing-warp) blur(5px)}}
+
+/* Three distributed yellow pockets target about 15% of the field. The mask
+   excludes the upper-left headline area after displacement is applied. */
+.landing-aurora .aurora-yellow{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(ellipse 17% 20% at 83% 20%,var(--rich-yellow) 0%,var(--rich-yellow) 20%,transparent 74%),radial-gradient(ellipse 16% 19% at 80% 78%,var(--rich-yellow) 0%,var(--rich-yellow) 20%,transparent 74%),radial-gradient(ellipse 20% 17% at 26% 83%,var(--rich-yellow) 0%,var(--rich-yellow) 20%,transparent 74%);filter:url(#aurora-landing-warp) blur(7px);mask-image:linear-gradient(90deg,transparent 52%,#000 65%),linear-gradient(transparent 64%,#000 75%);mask-composite:add}
+@media(max-width:580px){.landing-aurora .aurora-yellow{background-position:0 0;background-image:radial-gradient(ellipse 17% 20% at 87% 61%,var(--rich-yellow) 0%,var(--rich-yellow) 20%,transparent 74%),radial-gradient(ellipse 16% 19% at 76% 84%,var(--rich-yellow) 0%,var(--rich-yellow) 20%,transparent 74%),radial-gradient(ellipse 20% 17% at 18% 79%,var(--rich-yellow) 0%,var(--rich-yellow) 20%,transparent 74%);filter:url(#aurora-landing-warp) blur(5px);mask-image:linear-gradient(transparent 42%,#000 54%);mask-composite:add}}

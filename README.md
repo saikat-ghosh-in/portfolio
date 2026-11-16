@@ -1,6 +1,6 @@
 # Saikat Ghosh — Java Developer
 
-A responsive, lightweight portfolio with tactile artwork, slow CSS aurora motion, and clear recruiter navigation.
+A responsive, lightweight portfolio with tactile artwork, static aurora backgrounds, verified certificate links, and clear recruiter navigation.
 
 Live: https://saikat-ghosh-portfolio.pages.dev/
 
